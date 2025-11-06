@@ -54,7 +54,7 @@ O site é hospedado automaticamente via **GitHub Pages**, usando o fluxo de depl
 
 ### 🌐 Acesso
 
-📎 [Acesse o SGF 2.0](https://SEU_USUARIO.github.io/SGF/docs/)  
+📎 [Acesse o SGF 2.0](https://CLICHERIA.github.io/SGF/docs/)  
 (Substitua `SEU_USUARIO` pelo seu usuário do GitHub)
 
 ---
