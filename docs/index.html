@@ -6,102 +6,95 @@
   <title>Gestão de Ferramentais — Grupo Sovel</title>
 
   <style>
-    /* Remove TODAS as bordas brancas do navegador */
+    /* Reset geral */
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      background: #000000 !important; /* fundo 100% preto */
-      overflow-x: hidden;
-    }
-
-    /* Evita qualquer fundo branco automático do GitHub Pages */
-    * {
-      background-color: transparent !important;
-      box-sizing: border-box;
-    }
-
-    /* Container central */
-    .container {
-      width: 100%;
-      height: 100vh;
-      background: #0a0f1a; /* preto estilizado do seu site */
+      background: #0b0f17; /* Preto azulado corporativo */
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: #e6ecf5;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Container principal */
+    .container {
       text-align: center;
-      padding: 0;
-      margin: 0;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.03); 
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      width: 90%;
+      max-width: 650px;
+      backdrop-filter: blur(6px);
     }
 
     h1 {
-      color: #ffffff;
       font-size: 2rem;
-      margin: 0;
-      font-weight: 700;
+      margin-bottom: 6px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #ffffff;
     }
 
     h2 {
-      color: #bcd4ff;
-      margin-top: 8px;
-      font-weight: 400;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #b8c6d9;
+      margin-top: 0;
+      margin-bottom: 32px;
     }
 
-    /* Botão neon */
+    /* Botão elegante corporativo */
     .btn {
-      margin-top: 40px;
-      padding: 18px 48px;
-      font-size: 1.3rem;
-      color: #ffffff;
-      background: #1a2333;
-      border: 2px solid #0ff;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 0 12px #0ff, 0 0 24px #0ff inset;
-      animation: pulse 1.8s infinite ease-in-out;
-      text-decoration: none;
       display: inline-block;
+      padding: 16px 44px;
+      background: linear-gradient(135deg, #1f2a44, #243759);
+      border: 1px solid #4fa3ff;
+      border-radius: 12px;
+      color: #eaf4ff;
+      font-size: 1.15rem;
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: 0.25s;
+      box-shadow: 0 0 12px rgba(79, 163, 255, 0.35);
     }
 
     .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #0ff, 0 0 40px #0ff inset;
+      transform: translateY(-3px);
+      box-shadow: 0 0 22px rgba(79, 163, 255, 0.55);
+      background: linear-gradient(135deg, #26324d, #2d436a);
     }
 
-    /* Animação neon */
-    @keyframes pulse {
-      0% { box-shadow: 0 0 8px #0ff, 0 0 16px #0ff inset; }
-      50% { box-shadow: 0 0 22px #0ff, 0 0 45px #0ff inset; }
-      100% { box-shadow: 0 0 8px #0ff, 0 0 16px #0ff inset; }
-    }
-
-    /* Rodapé */
+    /* Rodapé corporativo discreto */
     footer {
       position: absolute;
-      bottom: 12px;
+      bottom: 14px;
       width: 100%;
       text-align: center;
-      color: #777;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      color: #7c8799;
+      letter-spacing: 0.4px;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-
     <h1>Gestão de Ferramentais</h1>
     <h2>Grupo Sovel — Departamento de Amostras e Clicheria</h2>
 
-    <a href="menu.html" class="btn">ACESSAR MENU INTERATIVO</a>
+    <a href="menu.html" class="btn">Acessar Painel Interativo</a>
   </div>
 
   <footer>
-    © 2025 Grupo Sovel — Todos os direitos reservados
+    © 2025 Grupo Sovel — Sistema Interno
   </footer>
 </body>
 </html>
