@@ -3,7 +3,7 @@
 <h1 align="center">Sistema de Gestão de Ferramentais</h1>
 
 <p align="center">
-  <strong>Grupo Sovel · Departamento de Amostras e Clicheria</strong>
+  <strong>Departamento de Amostras e Clicheria</strong>
 </p>
 
 ---
