@@ -1,6 +1,6 @@
 <h1 align="center">Grupo Sovel da Amazônia</h1>
 
-<h1 align="center">Sistema de Gestão de Ferramentais</h1>
+<h1 align="center">SGF - Sistema de Gestão de Ferramentais</h1>
 
 <p align="center">
   <strong>Departamento de Amostras e Clicheria</strong>
@@ -10,7 +10,8 @@
 
 ## 🧩 Sobre o Projeto
 
-O **SGF** é um sistema interno de controle e registro de ferramentais, desenvolvido para o **Departamento de Amostras e Clicheria** da **Grupo Sovel**. Seu objetivo é otimizar o gerenciamento de informações, garantindo **rastreabilidade**, **segurança** e **agilidade** nas operações internas.
+O SGF é um sistema interno de controle e registro de ferramentais, desenvolvido para o Departamento de Amostras e Clicheria** do Grupo Sovel da Amazônia.
+Seu objetivo é otimizar o gerenciamento de informações referentes aos ferramentais, garantindo rastreabilidade, segurança e agilidade nas operações internas.
 
 ---
 
@@ -33,13 +34,13 @@ O **SGF** é um sistema interno de controle e registro de ferramentais, desenvol
 <details open>
 <summary>📂 docs/</summary>
 
-- 🧱 <code>index.html</code>  
-- 🧭 <code>menu.html</code>  
-- 🧾 <code>registrar.html</code>  
-- 🔍 <code>consultar.html</code>  
-- 📋 <code>detalhes.html</code>  
-- ✏️ <code>editar.html</code>  
-- 📊 <code>dashboard.html</code>  
+- 🧱 <code>index</code>  
+- 🧭 <code>menu</code>  
+- 🧾 <code>registrar</code>  
+- 🔍 <code>consultar</code>  
+- 📋 <code>detalhes</code>  
+- ✏️ <code>editar</code>  
+- 📊 <code>dashboard</code>  
 - ⚙️ <code>.nojekyll</code>
 
 <details>
@@ -73,16 +74,18 @@ O **SGF** é um sistema interno de controle e registro de ferramentais, desenvol
 
 ---
 
-## 🚀 Deploy Automático (GitHub Pages)
+## 🚀 Deploy Automático
 
-O site é hospedado automaticamente via **GitHub Pages**, utilizando o fluxo de deploy configurado em: `.github/workflows/static.yml`  
-Sempre que há um novo commit na branch principal, o GitHub executa automaticamente o processo de build e publica o site atualizado. 🔗 **Acesse o SGF:** https://clicheria.github.io/SGF/docs/ 
+O site é hospedado automaticamente via GitHub Pages, utilizando o fluxo de deploy configurado em: `.github/workflows/static.yml`  
+Sempre que há um novo commit na branch principal, o GitHub executa automaticamente o processo de build e publica o site atualizado. 
+
+🔗 **Acesse o SGF:** https://clicheria.github.io/SGF/docs/ 
 
 ---
 
 ## 🧠 Tecnologias Principais
 
-- **HTML5**, **CSS3** e **JavaScript Puro**  
+- **HTML5**, **CSS3** e JavaScript Puro 
 - **Firebase** (Realtime Database / config em `docs/js/firebase-config.js`)  
 - **GitHub Pages** (deploy via Actions)  
 - **Design responsivo** e tema escuro com identidade neon
@@ -91,7 +94,7 @@ Sempre que há um novo commit na branch principal, o GitHub executa automaticame
 
 ## 💡 Autor e Manutenção
 
-**Desenvolvido por:**  
+**Desenvolvido por:*Samueldson Ferreira*  
 🧰 *Departamento de Amostras e Clicheria — Grupo Sovel da Amazônia*
 
 📅 **Versão atual:** SGF 1.0
