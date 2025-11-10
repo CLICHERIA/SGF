@@ -2,32 +2,42 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SGF — Grupo Sovel</title>
   <meta name="description" content="Sistema de Gestão de Ferramentais — Grupo Sovel (D.A.C)" />
   <link rel="icon" href="assets/img/logosovel1337.png" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* CSS inline para animações básicas */
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header class="header fade-in">
-      <img src="assets/img/logosovel1337.png" alt="logo" class="logo" />
-      <div>
+      <img src="assets/img/logosovel1337.png" alt="Logo Grupo Sovel" class="logo" />
+      <div class="header-text">
         <div class="title">Sistema de Gestão de Ferramentais — SGF</div>
         <div class="subtitle">Departamento de Amostras e Clicheria • Grupo Sovel da Amazônia</div>
       </div>
     </header>
 
-    <main class="card fade-in" style="margin-top:18px;">
-      <h3 style="margin:0 0 12px 0; color:var(--accent)">Bem-vindo ao Painel SGF</h3>
-      <p style="color:var(--muted); margin:0 0 18px 0;">
+    <main class="card fade-in">
+      <h3 class="welcome-title">Bem-vindo ao Painel SGF</h3>
+      <p class="welcome-desc">
         Painel corporativo para registro, consulta e controle de ferramentais.
       </p>
 
-      <div class="menu-grid" style="margin-bottom:12px;">
+      <div class="menu-grid">
         <div class="menu-btn" onclick="location.href='menu.html'">
           <div class="icon">📋</div>
-          <div>
+          <div class="btn-content">
             <div class="label">Abrir Painel</div>
             <div class="desc">Acesse o menu interativo</div>
           </div>
@@ -35,7 +45,7 @@
 
         <div class="menu-btn" onclick="location.href='dashboard.html'">
           <div class="icon">📈</div>
-          <div>
+          <div class="btn-content">
             <div class="label">Dashboard</div>
             <div class="desc">Visão geral e gráficos</div>
           </div>
@@ -43,24 +53,35 @@
 
         <div class="menu-btn" onclick="location.href='consultar.html'">
           <div class="icon">🔍</div>
-          <div>
+          <div class="btn-content">
             <div class="label">Consultar Ferramentais</div>
             <div class="desc">Buscar, editar e gerar QR</div>
           </div>
         </div>
       </div>
 
-      <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
-        <div style="color:var(--muted);">© 2025 Grupo Sovel da Amazônia — D.A.C</div>
-        <div>
+      <div class="footer-actions">
+        <div class="copyright">© 2025 Grupo Sovel da Amazônia — D.A.C</div>
+        <div class="actions">
           <a class="btn ghost" href="README.html" target="_blank">Documentação</a>
-          <a class="btn" href="menu.html">Entrar</a>
+          <a class="btn primary" href="menu.html">Entrar</a>
         </div>
       </div>
     </main>
 
     <div class="footer">Versão 1.0 • Atualizado Outubro/2025</div>
   </div>
+
+  <script>
+    // JavaScript para smooth scrolling (se necessário para links internos futuros)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
 </body>
 </html>
-
