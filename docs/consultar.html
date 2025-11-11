@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Consultar — SGF</title>
 
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" /> <!-- Seu CSS global -->
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <style>
-      /* Centralização geral */
+      /* Estilos específicos para consultar.html (sobrescrevem o global se necessário) */
       body {
         text-align: center;
         padding-bottom: 80px; /* Espaço para o rodapé fixo */
@@ -25,24 +25,66 @@
       .hero input.input {
         height: 44px;
         width: 280px;
-        min-width: 200px; /* Evita desalinhamento em telas pequenas */
+        min-width: 200px;
         text-align: center;
-        box-sizing: border-box; /* Inclui padding/border na largura */
+        box-sizing: border-box;
       }
 
-      /* Alinhamento da barra de busca */
       .hero .barra-busca {
         display: flex;
         justify-content: center;
-        align-items: center; /* Alinha verticalmente */
+        align-items: center;
         gap: 10px;
         flex-wrap: wrap;
         margin-bottom: 25px;
       }
 
       .hero .barra-busca .btn {
-        min-width: 100px; /* Largura consistente para botões */
+        min-width: 100px;
         box-sizing: border-box;
+        cursor: pointer !important; /* Garante clique */
+        pointer-events: auto !important; /* Permite interação */
+      }
+
+      /* Estilos para botões (adicionados para garantir funcionalidade e aparência) */
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.25s;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: #1d4ed8;
+        color: #fff;
+      }
+
+      .btn.primary:hover {
+        background: #163fa3;
+      }
+
+      .btn.ghost {
+        background: transparent;
+        border: 1px solid #1d4ed8;
+        color: #1d4ed8;
+      }
+
+      .btn.ghost:hover {
+        background: #1d4ed8;
+        color: #fff;
+      }
+
+      .btn.btn-danger {
+        background: #dc2626;
+        color: #fff;
+      }
+
+      .btn.btn-danger:hover {
+        background: #b91c1c;
       }
 
       table th, table td {
@@ -85,9 +127,9 @@
         <div class="barra-busca">
             <input id="busca" class="input" placeholder="Digite SV, Nome ou NF-e" />
 
-            <button id="btnBuscar" class="btn">Consultar</button>
+            <button id="btnBuscar" class="btn primary">Consultar</button>
             <button id="btnExportCSV" class="btn ghost">Exportar CSV</button>
-            <button id="btnExportPDF" class="btn">Exportar PDF</button>
+            <button id="btnExportPDF" class="btn primary">Exportar PDF</button>
             <button id="btnVoltar" class="btn ghost">Voltar</button>
         </div>
 
@@ -122,7 +164,6 @@
     © 2025 Sovel da Amazônia — Todos os direitos reservados.
 </footer>
 
-
 <!-- ========================= -->
 <!--          SCRIPT           -->
 <!-- ========================= -->
@@ -130,8 +171,9 @@
     console.log('Script de consultar.html iniciado'); // Log para confirmar execução
 
     try {
-        import { buscarTodos, removerFerramental } from './assets/js/script.js';
-        import { exportToCSV } from './assets/js/exporter.js';
+        // Imports com try-catch para capturar erros
+        const { buscarTodos, removerFerramental } = await import('./assets/js/script.js');
+        const { exportToCSV } = await import('./assets/js/exporter.js');
 
         // Verifica se os elementos existem antes de anexar listeners
         const tabela = document.getElementById('tabela');
@@ -286,7 +328,7 @@
 
     } catch (error) {
         console.error('Erro ao importar ou executar script:', error);
-        alert('Erro interno: Falha ao carregar dependências. Verifique os arquivos JS e Firebase.');
+        alert('Erro interno: Falha ao carregar dependências. Verifique os arquivos JS e Firebase. Detalhes: ' + error.message);
     }
 </script>
 
