@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Consultar Ferramentais</title>
+<script type="module" src="./assets/js/script.js"></script>
 <script type="module" src="./assets/js/exporter.js"></script>
 <style>
   table { border-collapse: collapse; width: 100%; margin-top: 1em; }
@@ -40,9 +41,7 @@
 </table>
 
 <script type="module">
-import { auth, db } from './firebase-config.js';
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
-import { collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
+import { buscarTodos, removerFerramental } from './assets/js/script.js';
 import { exportToCSV } from './assets/js/exporter.js';
 
 const tabela = document.getElementById('tabela');
@@ -53,36 +52,19 @@ const inputBusca = document.getElementById('busca');
 
 let currentList = [];
 
-// Login inicial
-async function login() {
-    try {
-        const email = prompt("Digite seu email:");
-        const senha = prompt("Digite sua senha:");
-        await signInWithEmailAndPassword(auth, email, senha);
-        carregarTodos();
-    } catch (err) {
-        alert("Erro ao logar: " + err.message);
-    }
-}
-
 // Carrega todos os ferramental
 async function carregarTodos() {
+    tabela.innerHTML = '';
     try {
-        tabela.innerHTML = '';
-        const col = collection(db, "ferramentais");
-        const q = query(col, orderBy("dataRegistro", "desc"));
-        const snap = await getDocs(q);
-        currentList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
+        currentList = await buscarTodos();
         if (currentList.length === 0) {
             tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental cadastrado</td></tr>';
             return;
         }
-
         currentList.forEach(item => tabela.appendChild(montarLinha(item)));
-    } catch (err) {
+    } catch(err) {
         console.error(err);
-        alert("Erro na consulta: " + err.message);
+        tabela.innerHTML = `<tr><td colspan="9">Erro na consulta: ${err.message}</td></tr>`;
     }
 }
 
@@ -97,25 +79,19 @@ function montarLinha(item) {
         <td>${item.dataRegistro || ''}</td>
         <td>${item.estado || ''}</td>
         <td>${item.localizacao || ''}</td>
-        <td>${(item.responsavel||'').split('@')[0] || ''}</td>
+        <td>${item.responsavel || ''}</td>
         <td>
             <button class="editar">Editar</button>
             <button class="excluir">Excluir</button>
-            <button class="qrbtn">QR</button>
-            <button class="qrExport">Exportar QR</button>
         </td>
     `;
-
-    tr.querySelector('.editar').onclick = () => location.href = `editar.html?id=${item.id}`;
+    tr.querySelector('.editar').onclick = () => alert("Editar: " + item.nome);
     tr.querySelector('.excluir').onclick = async () => {
-        if (confirm("Deseja realmente excluir esse registro?")) {
-            await deleteDoc(doc(db, "ferramentais", item.id));
+        if(confirm("Deseja realmente excluir este registro?")) {
+            await removerFerramental(item.id);
             tr.remove();
         }
     };
-    tr.querySelector('.qrbtn').onclick = () => alert("Gerar QR para: " + item.nome);
-    tr.querySelector('.qrExport').onclick = () => alert("Exportar QR para: " + item.nome);
-
     return tr;
 }
 
@@ -128,7 +104,7 @@ btnBuscar.onclick = () => {
         (it.nfe && it.nfe.toLowerCase().includes(termo))
     );
     tabela.innerHTML = '';
-    if (filtrados.length === 0) tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental encontrado</td></tr>';
+    if(filtrados.length === 0) tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental encontrado</td></tr>';
     else filtrados.forEach(i => tabela.appendChild(montarLinha(i)));
 };
 
@@ -141,9 +117,9 @@ btnExportCSV.onclick = () => {
 // Voltar
 btnVoltar.onclick = () => location.href = "menu.html";
 
-// Inicia login
-login();
-
+// Inicializa carregamento
+carregarTodos();
 </script>
+
 </body>
 </html>
