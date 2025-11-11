@@ -1,9 +1,8 @@
 // firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
 
-// ❗ Substitua pelos dados do seu Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAAMyXl5uWSWYNAy-... (EXEMPLO)",
   authDomain: "dacsovel-53481.firebaseapp.com",
@@ -14,5 +13,5 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
 export const auth = getAuth(app);
+export const db = getFirestore(app);
