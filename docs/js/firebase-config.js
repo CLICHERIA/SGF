@@ -1,23 +1,9 @@
-// firebase-config.js (Firestore + Auth) — coloque suas credenciais aqui
-// ATENÇÃO: substitua os valores entre <> pelos de seu projeto Firebase.
-// Você pode copiar (somente) os valores do console Firebase > Configurações do Projeto.
-
+// firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
-/* === 1) Substitua estas chaves com as suas (do Firebase console) ===
-const firebaseConfig = {
-  apiKey: "AIzaSyAAMyXl5uWSWYNAy-qZBy3N3yU84mdS73w",
-  authDomain: "dacsovel-53481.firebaseapp.com",
-  projectId: "dacsovel-53481",
-  storageBucket: "dacsovel-53481.firebasestorage.app",
-  messagingSenderId: "37867522513",
-  appId: "1:37867522513:web:336d687e3fc8408bd138f0",
-};
-==================================================================== */
-
-/* === Exemplo (apenas referência — NÃO comite credenciais sensíveis) ===
+// ❗ Substitua pelos dados do seu Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAAMyXl5uWSWYNAy-... (EXEMPLO)",
   authDomain: "dacsovel-53481.firebaseapp.com",
@@ -26,17 +12,7 @@ const firebaseConfig = {
   messagingSenderId: "37867522513",
   appId: "1:37867522513:web:336d687e3fc8408bd138f0"
 };
-==================================================================== */
 
-/* ====== Coloque o objeto real aqui ====== */
-const firebaseConfig = {
-  apiKey: "AIzaSyAAMyXl5uWSWYNAy-... (EXEMPLO)",
-  authDomain: "dacsovel-53481.firebaseapp.com",
-  projectId: "dacsovel-53481",
-  storageBucket: "dacsovel-53481.appspot.com",
-  messagingSenderId: "37867522513",
-  appId: "1:37867522513:web:336d687e3fc8408bd138f0"
-};
-/* ======================================= */
-
-const app
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const auth = getAuth(app);
