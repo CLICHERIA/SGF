@@ -127,16 +127,24 @@
 <!--          SCRIPT           -->
 <!-- ========================= -->
 <script type="module">
-    import { buscarTodos, removerFerramental } from './assets/js/script.js';
-    import { exportToCSV } from './assets/js/exporter.js';
+    console.log('Script de consultar.html iniciado'); // Log para confirmar execução
 
-    // Aguarda o DOM carregar
-    document.addEventListener('DOMContentLoaded', () => {
+    try {
+        import { buscarTodos, removerFerramental } from './assets/js/script.js';
+        import { exportToCSV } from './assets/js/exporter.js';
+
+        // Verifica se os elementos existem antes de anexar listeners
         const tabela = document.getElementById('tabela');
         const btnBuscar = document.getElementById('btnBuscar');
         const btnExportCSV = document.getElementById('btnExportCSV');
         const btnExportPDF = document.getElementById('btnExportPDF');
         const btnVoltar = document.getElementById('btnVoltar');
+
+        if (!tabela || !btnBuscar || !btnExportCSV || !btnExportPDF || !btnVoltar) {
+            console.error('Erro: Um ou mais elementos não encontrados no DOM.');
+            alert('Erro interno: Elementos da página não carregaram corretamente.');
+            return;
+        }
 
         let currentList = [];
 
@@ -197,7 +205,7 @@
               arr.forEach(i => tabela.appendChild(montarLinha(i)));
           } catch (error) {
             console.error('Erro ao carregar dados:', error);
-            Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao carregar dados.' });
+            Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao carregar dados. Verifique a configuração do Firebase.' });
           }
         }
 
@@ -273,8 +281,13 @@
           location.href = 'menu.html';
         };
 
+        // Carrega os dados iniciais
         carregarTodos();
-    });
+
+    } catch (error) {
+        console.error('Erro ao importar ou executar script:', error);
+        alert('Erro interno: Falha ao carregar dependências. Verifique os arquivos JS e Firebase.');
+    }
 </script>
 
 </body>
