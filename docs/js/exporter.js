@@ -1,6 +1,6 @@
-// exporter.js — helper para export CSV/XLSX (usa SheetJS já carregado na página)
-export function exportToCSV(dataArray, filename = 'export.csv') {
-  // transforma para planilha tabular
+// exporter.js — versão compatível com GitHub Pages (sem export/import)
+
+function exportToCSV(dataArray, filename = 'export.csv') {
   const headers = ['id','tipo','nfe','sv','nome','dataRegistro','estado','localizacao','responsavel'];
   const rows = dataArray.map(item => headers.map(h => item[h] || ''));
   const csv = [headers.join(','), ...rows.map(r => r.map(s => `"${String(s).replace(/"/g,'""')}"`).join(','))].join('\n');
@@ -13,7 +13,7 @@ export function exportToCSV(dataArray, filename = 'export.csv') {
   link.remove();
 }
 
-export function exportToXLSX(dataArray, filename = 'export.xlsx') {
+function exportToXLSX(dataArray, filename = 'export.xlsx') {
   const headers = ['id','tipo','nfe','sv','nome','dataRegistro','estado','localizacao','responsavel'];
   const ws_data = [headers, ...dataArray.map(item => headers.map(h => item[h] || ''))];
   const wb = XLSX.utils.book_new();
@@ -28,3 +28,7 @@ export function exportToXLSX(dataArray, filename = 'export.xlsx') {
   a.click();
   a.remove();
 }
+
+// Torna funções globais
+window.exportToCSV = exportToCSV;
+window.exportToXLSX = exportToXLSX;
