@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <script type="module">
+    import { auth } from './firebase-config.js';
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+
+    window.login = async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login realizado com sucesso!");
+        window.location.href = "index.html"; // Redireciona para página principal após login
+      } catch (error) {
+        alert("Erro no login: " + error.message);
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Login</h1>
+  <input id="email" type="email" placeholder="Email" />
+  <br />
+  <input id="password" type="password" placeholder="Senha" />
+  <br />
+  <button onclick="login()">Entrar</button>
+</body>
+</html>
