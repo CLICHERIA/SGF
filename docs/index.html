@@ -6,121 +6,149 @@
 <title>Gestão de Ferramentais — Grupo Sovel</title>
 
 <style>
-  /* ================================
-     ESTILO GLOBAL — TEMA CORPORATIVO SOVEL
-  =================================== */
-
+  /* =======================
+     ESTILO GLOBAL
+  ======================== */
   body {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    font-family: "Segoe UI", Roboto, sans-serif;
-    color: #e5eaf0;
+    background: #000;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #fff;
+    overflow-x: hidden;
 
-    /* Fundo inspirado no estilo do site Sovel
-       — Azul petróleo + preto industrial com gradientes */
-    background: radial-gradient(circle at top center,
-        rgba(0, 80, 120, 0.55),
-        rgba(0, 30, 50, 0.85) 60%,
-        rgba(0, 10, 20, 1) 100%),
-      linear-gradient(90deg,
-        rgba(0, 50, 80, 0.3),
-        rgba(0, 20, 40, 0.6));
-    background-blend-mode: overlay;
+    /* background imagem com floresta */
+    background-image: url('amazon-bg.jpg'); /* Coloque sua imagem aqui */
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
   }
 
-  /* Container central */
+  /* camada de escurecimento translúcido */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(2px);
+    z-index: 0;
+  }
+
+  /* container geral */
   .container {
-    height: 100vh;
+    position: relative;
+    z-index: 5;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 40px 10px;
     text-align: center;
-    padding: 0 20px;
   }
 
-  /* LOGO */
-  .logo {
-    width: 190px;
-    margin-bottom: 25px;
-    filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.2));
-  }
-
-  /* TÍTULOS */
   h1 {
-    font-size: 2.2rem;
-    font-weight: 600;
+    font-size: 2.6rem;
+    margin-bottom: 5px;
     letter-spacing: 1px;
-    margin: 0;
-    text-shadow: 0 0 10px rgba(0, 150, 255, 0.35);
   }
 
   h2 {
-    margin-top: 10px;
-    font-size: 1.1rem;
-    font-weight: 300;
+    font-size: 1.3rem;
     opacity: 0.85;
+    margin-bottom: 30px;
   }
 
-  /* BOTÃO CORPORATIVO */
-  .btn {
-    margin-top: 40px;
-    padding: 16px 42px;
-    font-size: 1.2rem;
-    background: linear-gradient(90deg,
-      #0b5c7a,
-      #0a789c);
-    border: none;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+  /* CARD CENTRAL */
+  .card {
+    background: rgba(20, 20, 20, 0.65);
+    padding: 40px 45px;
+    border-radius: 18px;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 0 20px rgba(0, 255, 180, 0.18);
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(0,168,120,0.35);
+  }
 
-    transition: 0.25s ease-in-out;
-    box-shadow: 0 0 12px rgba(0, 180, 255, 0.2);
+  /* BOTÃO */
+  .btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 18px 38px;
+    font-size: 1.2rem;
+    color: #00ffc8;
+    border: 2px solid #00ffc8;
+    background: transparent;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    box-shadow: 0 0 12px #00ffc8, inset 0 0 10px rgba(0,255,200,0.2);
+    transition: 0.25s;
   }
 
   .btn:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 20px rgba(0, 220, 255, 0.4);
-    background: linear-gradient(90deg,
-      #0d6b8c,
-      #0b87b3);
+    background: rgba(0,255,200,0.18);
+    transform: scale(1.04);
+    box-shadow: 0 0 18px #00ffc8, inset 0 0 14px rgba(0,255,200,0.4);
   }
 
-  /* Rodapé */
+  /* =======================
+     RODAPÉ ESTILO CARTÃO
+  ======================== */
   footer {
-    position: absolute;
-    bottom: 18px;
+    margin-top: 60px;
     width: 100%;
     text-align: center;
+    padding: 25px 10px;
+    background: rgba(0,0,0,0.55);
+    border-top: 1px solid rgba(0,255,200,0.25);
+    box-shadow: 0 -4px 20px rgba(0,255,200,0.15);
+    backdrop-filter: blur(3px);
+  }
+
+  .footer-title {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+    font-weight: 600;
+  }
+
+  .footer-sub {
+    font-size: 0.95rem;
+    opacity: 0.8;
+  }
+
+  .copyright {
+    margin-top: 12px;
     font-size: 0.85rem;
     opacity: 0.6;
   }
+
 </style>
 </head>
 
 <body>
 
+<div class="overlay"></div>
+
 <div class="container">
 
-  <img src="logosovel1337.png" class="logo" alt="Logo Sovel">
+  <div class="card">
+    <h1>Gestão de Ferramentais</h1>
+    <h2>Grupo Sovel — Departamento de Amostras e Clicheria</h2>
 
-  <h1>Gestão de Ferramentais</h1>
-  <h2>Grupo Sovel — Departamento de Amostras e Clicheria</h2>
+    <a href="menu.html" class="btn">ACESSAR MENU INTERATIVO</a>
+  </div>
 
-  <button class="btn" onclick="window.location.href='menu.html'">
-    Acessar Menu Interativo
-  </button>
+  <footer>
+    <div class="footer-title">Gestão de Ferramentais</div>
+    <div class="footer-sub">Departamento de Amostras e Clicheria — Grupo Sovel</div>
+    <div class="copyright">© 2025 Grupo Sovel — Todos os direitos reservados.</div>
+  </footer>
 
 </div>
 
-<footer>© 2025 Grupo Sovel — Todos os direitos reservados</footer>
-
 </body>
 </html>
-
