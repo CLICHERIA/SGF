@@ -1,101 +1,97 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu — Sistema de Gestão de Ferramentais</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Menu SGF — Grupo Sovel</title>
 
 <style>
 * {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Inter", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", Arial, sans-serif;
 }
 
 body {
     background: linear-gradient(180deg, #eef3f9 0%, #f5f7fa 40%, #ffffff 100%);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    min-height:100vh;
+    color: #2b2b2b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Container principal */
-.main-container {
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:40px 20px;
-    width:100%;
-    max-width:1200px;
+header {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 40px;
 }
 
-/* Logo */
-.logo {
-    width:70%;
-    max-width:200px;
-    margin-bottom:20px;
+header img {
+    width: 120px;
 }
 
-/* Título */
-h2 {
-    font-size:2rem;
-    color:#123b7a;
-    margin-bottom:30px;
-    text-align:center;
+header h1 {
+    font-size: 2rem;
+    color: #123b7a;
+    margin-top: 15px;
+    margin-bottom: 5px;
 }
 
-/* Botões estilo index.html */
+header h2 {
+    font-size: 1.2rem;
+    color: #4e4e4e;
+}
+
 .menu-buttons {
-    display:flex;
-    gap:20px;
-    flex-wrap:wrap;
-    justify-content:center;
-    margin-bottom:40px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
 }
 
 .menu-buttons button {
-    padding:14px 34px;
-    border-radius:10px;
-    border:none;
-    background:#1d5cc6;
-    color:#fff;
-    font-size:1.15rem;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:none;
-    transition:0.3s;
-    box-shadow:0 4px 16px rgba(29,92,198,0.28);
-    min-width:150px;
+    padding: 18px 36px;
+    border-radius: 10px;
+    border: none;
+    background: #1d5cc6;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 16px rgba(29,92,198,0.28);
 }
 
 .menu-buttons button:hover {
-    background:#174da7;
-    box-shadow:0 6px 20px rgba(29,92,198,0.38);
-    transform:translateY(-2px);
+    background: #174da7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(29,92,198,0.38);
 }
 
-/* Rodapé azul escuro ocupando toda largura */
+/* Rodapé azul escuro */
 footer {
-    width:100%;
-    background:#123b7a;
-    color:white;
-    text-align:center;
-    padding:50px 20px;
-    font-size:0.85rem;
+    margin-top: auto;
+    background: #123b7a;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 0.85rem;
+    width: 100%;
 }
 
 /* Responsivo */
 @media (max-width:600px){
     .menu-buttons {
         flex-direction: column;
-        gap:15px;
+        gap: 15px;
     }
+
     .menu-buttons button {
-        width:100%;
-        max-width:250px;
+        width: 100%;
+        max-width: 200px;
     }
 }
 </style>
@@ -103,53 +99,38 @@ footer {
 
 <body>
 
-<div class="main-container">
-    <img src="assets/img/logosovel1337.png" alt="Logo" class="logo">
+<header>
+    <img src="assets/img/logosovel1337.png" alt="Logo Grupo Sovel">
+    <h1>Menu Interativo</h1>
+</header>
 
-    <h2>Menu Interativo</h2>
-
-    <div class="menu-buttons">
-    <button id="btn1" onclick="alert('Registrar')">Registrar</button>
-    <button id="btn2" onclick="alert('Consultar')">Consultar</button>
-    <button id="btn3" onclick="alert('Dashboard')">Dashboard</button>
-    <button id="logoutBtn">Sair</button>
-</div>
+<div class="menu-buttons">
+    <button onclick="location.href='registrar.html'">Registrar</button>
+    <button onclick="location.href='consultar.html'">Consultar</button>
+    <button onclick="location.href='dashboard.html'">Dashboard</button>
+    <button onclick="logout()">Sair</button>
 </div>
 
 <footer>
     © 2025 Grupo Sovel da Amazônia — Todos os direitos reservados.
 </footer>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAAMyXl5uWSWYNAy-qZBy3N3yU84mdS73w",
-  authDomain: "dacsovel-53481.firebaseapp.com",
-  projectId: "dacsovel-53481",
-  storageBucket: "dacsovel-53481.firebasestorage.app",
-  messagingSenderId: "37867522513",
-  appId: "1:37867522513:web:336d687e3fc8408bd138f0",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Redireciona para login se não estiver autenticado
-onAuthStateChanged(auth, user => {
-    if(!user){
-        window.location.href = "index.html";
+<script src="firebase-config.js"></script>
+<script>
+function logout() {
+    // Deslogar usuário do Firebase e voltar para index.html
+    if (firebase && firebase.auth) {
+        firebase.auth().signOut().then(() => {
+            location.href = "index.html";
+        }).catch((error) => {
+            console.error("Erro ao sair:", error);
+        });
+    } else {
+        // fallback simples
+        location.href = "index.html";
     }
-});
-
-// Logout
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.href = "index.html";
-});
+}
 </script>
 
 </body>
 </html>
-
