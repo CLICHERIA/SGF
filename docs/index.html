@@ -1,154 +1,269 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Gestão de Ferramentais — Grupo Sovel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Ferramentais — Grupo Sovel</title>
 
-<style>
-  /* =======================
-     ESTILO GLOBAL
-  ======================== */
-  body {
-    margin: 0;
-    padding: 0;
-    background: #000;
-    font-family: "Segoe UI", Arial, sans-serif;
-    color: #fff;
-    overflow-x: hidden;
+  <style>
 
-    /* background imagem com floresta */
-    background-image: url('amazon-bg.jpg'); /* Coloque sua imagem aqui */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-  }
+    /* ========================== */
+    /*  RESET / BASE              */
+    /* ========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* camada de escurecimento translúcido */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(2px);
-    z-index: 0;
-  }
+    body, html {
+      width: 100%;
+      height: 100%;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: #000;
+    }
 
-  /* container geral */
-  .container {
-    position: relative;
-    z-index: 5;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 10px;
-    text-align: center;
-  }
 
-  h1 {
-    font-size: 2.6rem;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
-  }
+    /* ========================== */
+    /*  HERO COM FLORESTA        */
+    /* ========================== */
 
-  h2 {
-    font-size: 1.3rem;
-    opacity: 0.85;
-    margin-bottom: 30px;
-  }
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
 
-  /* CARD CENTRAL */
-  .card {
-    background: rgba(20, 20, 20, 0.65);
-    padding: 40px 45px;
-    border-radius: 18px;
-    width: 90%;
-    max-width: 550px;
-    box-shadow: 0 0 20px rgba(0, 255, 180, 0.18);
-    backdrop-filter: blur(3px);
-    border: 1px solid rgba(0,168,120,0.35);
-  }
+      background-image: url("amazon.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
 
-  /* BOTÃO */
-  .btn {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 18px 38px;
-    font-size: 1.2rem;
-    color: #00ffc8;
-    border: 2px solid #00ffc8;
-    background: transparent;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 1px;
+      /* Escurecimento + efeito estilo Sovel */
+      filter: brightness(0.35) blur(1px);
+    }
 
-    box-shadow: 0 0 12px #00ffc8, inset 0 0 10px rgba(0,255,200,0.2);
-    transition: 0.25s;
-  }
+    /* Overlay para suavizar */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+    }
 
-  .btn:hover {
-    background: rgba(0,255,200,0.18);
-    transform: scale(1.04);
-    box-shadow: 0 0 18px #00ffc8, inset 0 0 14px rgba(0,255,200,0.4);
-  }
 
-  /* =======================
-     RODAPÉ ESTILO CARTÃO
-  ======================== */
-  footer {
-    margin-top: 60px;
-    width: 100%;
-    text-align: center;
-    padding: 25px 10px;
-    background: rgba(0,0,0,0.55);
-    border-top: 1px solid rgba(0,255,200,0.25);
-    box-shadow: 0 -4px 20px rgba(0,255,200,0.15);
-    backdrop-filter: blur(3px);
-  }
+    /* ========================== */
+    /*  CARD CENTRAL              */
+    /* ========================== */
 
-  .footer-title {
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    margin-bottom: 3px;
-    font-weight: 600;
-  }
+    .center-card {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
-  .footer-sub {
-    font-size: 0.95rem;
-    opacity: 0.8;
-  }
+      width: 520px;
+      padding: 40px 50px;
 
-  .copyright {
-    margin-top: 12px;
-    font-size: 0.85rem;
-    opacity: 0.6;
-  }
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 14px;
+      text-align: center;
 
-</style>
+      border: 1px solid rgba(0, 255, 180, 0.25);
+      box-shadow: 0 0 22px rgba(0, 255, 180, 0.18);
+      backdrop-filter: blur(6px);
+    }
+
+    .center-card h1 {
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .center-card p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 35px;
+    }
+
+
+    /* ========================== */
+    /*  BOTÃO NEON                */
+    /* ========================== */
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      font-size: 1rem;
+      text-decoration: none;
+
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #00e6b5;
+      background: rgba(0, 255, 200, 0.08);
+
+      box-shadow: 0 0 12px rgba(0, 255, 200, 0.25);
+      transition: 0.25s ease;
+    }
+
+    .btn:hover {
+      background: rgba(0, 255, 200, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.55);
+    }
+
+
+    /* ========================== */
+    /*  RODAPÉ COMPLETO           */
+    /* ========================== */
+
+    footer {
+      width: 100%;
+      background: #0a4fa3;
+      color: white;
+      padding: 45px 0 20px 0;
+      position: relative;
+      z-index: 20;
+    }
+
+    .footer-content {
+      width: 90%;
+      max-width: 1400px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-map {
+      flex: 1;
+    }
+
+    .footer-logo {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+
+    .footer-about {
+      margin-bottom: 22px;
+      font-size: 1rem;
+    }
+
+    .icon {
+      width: 34px;
+      margin-right: 12px;
+      opacity: 0.9;
+      transition: 0.2s;
+    }
+
+    .icon:hover {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+
+    .footer-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    .footer-ico {
+      font-size: 1.4rem;
+      margin-top: 3px;
+    }
+
+    .footer-map iframe {
+      width: 100%;
+      height: 180px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .footer-line {
+      width: 90%;
+      margin: 25px auto;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .footer-copy {
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+  </style>
+
 </head>
-
 <body>
 
-<div class="overlay"></div>
+  <!-- HERO COM FLORESTA -->
+  <div class="hero"></div>
 
-<div class="container">
-
-  <div class="card">
+  <!-- CARD CENTRAL -->
+  <div class="center-card">
     <h1>Gestão de Ferramentais</h1>
-    <h2>Grupo Sovel — Departamento de Amostras e Clicheria</h2>
+    <p>Grupo Sovel — Departamento de Amostras e Clicheria</p>
 
-    <a href="menu.html" class="btn">ACESSAR MENU INTERATIVO</a>
+    <a href="menu.html" class="btn">Acessar Menu Interativo</a>
   </div>
 
+  <!-- RODAPÉ COMPLETO -->
   <footer>
-    <div class="footer-title">Gestão de Ferramentais</div>
-    <div class="footer-sub">Departamento de Amostras e Clicheria — Grupo Sovel</div>
-    <div class="copyright">© 2025 Grupo Sovel — Todos os direitos reservados.</div>
-  </footer>
+    <div class="footer-content">
 
-</div>
+      <!-- ESQUERDA -->
+      <div class="footer-left">
+        <img src="logo.png" class="footer-logo">
+        <p class="footer-about">Grupo Sovel, uma empresa genuinamente amazônense</p>
+
+        <a href="#"><img src="instagram.svg" class="icon"></a>
+        <a href="#"><img src="linkedin.svg" class="icon"></a>
+      </div>
+
+      <!-- CENTRO -->
+      <div class="footer-center">
+        <div class="footer-item">
+          <span class="footer-ico">📍</span>
+          <p>
+            <strong>Rua Dr. João de Paulo, 600</strong><br>
+            Colônia Antônio Aleixo<br>
+            Manaus - AM
+          </p>
+        </div>
+
+        <div class="footer-item">
+          <span class="footer-ico">📞</span>
+          <p><strong>(92) 9 8202-0067</strong></p>
+        </div>
+
+        <div class="footer-item">
+          <span class="footer-ico">ℹ️</span>
+          <p>
+            Seg - Qui: 7h às 17h<br>
+            Sex: 7h às 16h
+          </p>
+        </div>
+      </div>
+
+      <!-- MAPA -->
+      <div class="footer-map">
+        <iframe 
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-60.067%2C-3.12%2C-59.99%2C-3.05&layer=mapnik&marker=-3.10%2C-60.02">
+        </iframe>
+      </div>
+
+    </div>
+
+    <hr class="footer-line">
+
+    <p class="footer-copy">© 2025 Sovel da Amazônia — Todos os direitos reservados.</p>
+  </footer>
 
 </body>
 </html>
