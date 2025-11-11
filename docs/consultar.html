@@ -1,245 +1,215 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Consultar — SGF</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Consultar Ferramentais — Grupo Sovel</title>
 
-  <!-- Usa o mesmo CSS corporativo -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+<!-- ======== ESTILO GLOBAL ======== -->
+<link rel="stylesheet" href="assets/css/style.css" />
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #f3f6fa;
+        font-family: "Segoe UI", sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        text-align: center;
+    }
+
+    h1 {
+        margin-top: 40px;
+        font-weight: 600;
+        color: #1b2e4a;
+    }
+
+    /* Caixa geral */
+    .container {
+        margin-top: 30px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Barra de pesquisa */
+    .search-box {
+        width: 420px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-box input {
+        flex: 1;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #b8c6d8;
+        font-size: 16px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .search-box input:focus {
+        border-color: #0077cc;
+        box-shadow: 0 0 4px rgba(0, 119, 204, 0.45);
+    }
+
+    /* Botões */
+    button {
+        padding: 12px 22px;
+        font-size: 15px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .btn-primary {
+        background: #0077cc;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #005fa3;
+    }
+
+    .btn-secondary {
+        background: #d8dfe8;
+        color: #1b2e4a;
+    }
+
+    .btn-secondary:hover {
+        background: #c2ccd9;
+    }
+
+    /* Área de resultados */
+    #resultados {
+        margin-top: 25px;
+        width: 620px;
+        padding: 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+        display: none;
+        text-align: left;
+    }
+
+    .item {
+        padding: 10px 0;
+        border-bottom: 1px solid #e1e6ee;
+    }
+
+    /* Rodapé */
+    footer {
+        background: #0a1e3d;
+        color: white;
+        padding: 20px 0;
+        margin-top: auto;
+        text-align: center;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+    }
+</style>
+
 </head>
-
 <body>
 
-<!-- ===== HERO / ÁREA INTERNA ===== -->
-<section class="hero" style="
-    padding: 60px 20px;
-    display:flex;
-    justify-content:center;
-">
-    <div class="caixa" style="
-        width:100%;
-        max-width:1100px;
-        background:#f7f9fc;
-        border-radius:18px;
-        padding:40px 50px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.1);
-    ">
-        
-        <!-- Cabeçalho interno -->
-        <header class="header" style="
-            display:flex; 
-            gap:20px; 
-            align-items:center; 
-            margin-bottom:25px;
-        ">
-            <img src="assets/img/logosovel1337.png" class="logo" 
-                 style="width:95px;" alt="logo" />
+<h1>Consultar Ferramentais</h1>
 
-            <div>
-                <div class="title" style="
-                    font-size:2.1rem; 
-                    color:#123b7a; 
-                    font-weight:700;
-                ">
-                    Consulta de Ferramentais
-                </div>
+<div class="container">
 
-                <div class="subtitle" style="
-                    color:#4e4e4e; 
-                    font-size:1rem;
-                ">
-                    Busque por SV, Nome ou NF-e
-                </div>
-            </div>
-        </header>
-
-        <!-- ===== CONTEÚDO PRINCIPAL ===== -->
-        <main class="fade-in" style="width:100%;">
-
-            <!-- Barra de busca -->
-            <div style="
-                display:flex; 
-                gap:10px; 
-                align-items:center; 
-                flex-wrap:wrap; 
-                margin-bottom:25px;
-                justify-content:center;
-            ">
-                <input id="busca" class="input" 
-                       placeholder="Digite SV, Nome ou NF-e" 
-                       style="max-width:350px; width:100%;" />
-
-                <button id="btnBuscar" class="btn">Buscar</button>
-                <button id="btnVoltar" class="btn ghost" onclick="location.href='menu.html'">Voltar</button>
-                <button id="btnExportCSV" class="btn ghost">Exportar CSV</button>
-                <button id="btnExportXLS" class="btn">Exportar XLSX</button>
-            </div>
-
-            <!-- Tabela -->
-            <div class="table-wrap" style="
-                margin-top:20px;
-                overflow-x:auto;
-            ">
-                <table>
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>NF-e</th>
-                        <th>SV</th>
-                        <th>Nome</th>
-                        <th>Data</th>
-                        <th>Estado</th>
-                        <th>Localização</th>
-                        <th>Responsável</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="tabela"></tbody>
-                </table>
-            </div>
-
-        </main>
+    <div class="search-box">
+        <input type="text" id="pesquisa" placeholder="Digite o nome, código ou descrição">
+        <button class="btn-primary" onclick="buscarFerramentais()">Pesquisar</button>
+        <button class="btn-secondary" onclick="limparPesquisa()">Limpar</button>
     </div>
-</section>
 
-<!-- ===== RODAPÉ ===== -->
+    <div id="resultados"></div>
+
+</div>
+
 <footer>
-    <div class="footer-grid">
-
-        <div class="footer-col" style="text-align:center;">
-            <img src="assets/img/logosovel1337.png" />
-            <p>Grupo Sovel, uma empresa genuinamente amazonense.</p>
-        </div>
-
-        <div class="footer-col">
-            📍 Rua Dr. João de Paulo, 600 — Colônia Antônio Aleixo<br>
-            Manaus - AM<br><br>
-
-            📞 (92) 9 8202-0067<br><br>
-
-            🕒 Seg–Qui: 7h às 17h<br>
-            🕒 Sexta: 7h às 16h
-        </div>
-
-        <div class="footer-col">
-            <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-59.97%2C-3.15%2C-59.95%2C-3.12&amp;layer=mapnik&amp;marker=-3.13%2C-59.96"></iframe>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2025 Sovel da Amazônia — Todos os direitos reservados.
-    </div>
+    © 2025 Sovel da Amazônia — Todos os direitos reservados.
 </footer>
 
-<!-- ===== SCRIPTS ===== -->
+<!-- ==================== FIREBASE ==================== -->
 <script type="module">
-    import { buscarTodos, removerFerramental } from './assets/js/script.js';
-    import { exportToCSV, exportToXLSX } from './assets/js/exporter.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const tabela = document.getElementById('tabela');
-    const btnBuscar = document.getElementById('btnBuscar');
-    const btnExportCSV = document.getElementById('btnExportCSV');
-    const btnExportXLS = document.getElementById('btnExportXLS');
+    const firebaseConfig = {
+        apiKey: "SUA_APIKEY_AQUI",
+        authDomain: "seuProjeto.firebaseapp.com",
+        projectId: "seuProjeto",
+        storageBucket: "seuProjeto.appspot.com",
+        messagingSenderId: "0000000000",
+        appId: "1:0000000000:web:xxxxx"
+    };
 
-    let currentList = [];
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    function limparTabela(){ tabela.innerHTML = ''; }
+    // === Função de busca ===
+    window.buscarFerramentais = async () => {
+        const termo = document.getElementById("pesquisa").value.trim().toLowerCase();
+        const resultadosDiv = document.getElementById("resultados");
 
-    function montarLinha(item){
-      const tr = document.createElement('tr');
-
-      tr.innerHTML = `
-        <td>${item.tipo || ''}</td>
-        <td>${item.nfe || ''}</td>
-        <td>${item.sv || ''}</td>
-        <td>${item.nome || ''}</td>
-        <td>${item.dataRegistro || ''}</td>
-        <td>${item.estado || ''}</td>
-        <td>${item.localizacao || ''}</td>
-        <td>${(item.responsavel||'').split('@')[0] || ''}</td>
-        <td class="actions">
-          <button class="btn ghost editar">Editar</button>
-          <button class="btn btn-danger excluir">Excluir</button>
-          <button class="btn qrbtn">QR</button>
-        </td>
-      `;
-
-      tr.querySelector('.editar').onclick = () => location.href = `editar.html?id=${item.id}`;
-      tr.querySelector('.excluir').onclick = async () => {
-        const res = await Swal.fire({ 
-            icon:'warning', 
-            title:'Excluir?', 
-            text:'Deseja realmente excluir esse registro?', 
-            showCancelButton:true 
-        });
-        if (res.isConfirmed) {
-          const ok = await removerFerramental(item.id);
-          if(ok) tr.remove();
+        if (termo === "") {
+            alert("Digite algo para pesquisar.");
+            return;
         }
-      };
-      tr.querySelector('.qrbtn').onclick = () => gerarQR(item);
 
-      return tr;
-    }
+        resultadosDiv.style.display = "block";
+        resultadosDiv.innerHTML = "<p>Buscando...</p>";
 
-    async function carregarTodos(){
-      limparTabela();
-      const arr = await buscarTodos();
-      currentList = arr;
+        const colRef = collection(db, "ferramentais");
+        const snapshot = await getDocs(colRef);
 
-      if(arr.length === 0)
-         tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental cadastrado</td></tr>';
-      else
-         arr.forEach(i => tabela.appendChild(montarLinha(i)));
-    }
+        let encontrados = [];
 
-    btnBuscar.onclick = async () => {
-      const termo = document.getElementById('busca').value.trim().toLowerCase();
-      if(!termo) return carregarTodos();
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const texto =
+                (data.nome || "") +
+                " " +
+                (data.codigo || "") +
+                " " +
+                (data.descricao || "");
 
-      const filtrados = currentList.filter(it => 
-          (it.sv && it.sv.toLowerCase().includes(termo)) ||
-          (it.nome && it.nome.toLowerCase().includes(termo)) ||
-          (it.nfe && it.nfe.toLowerCase().includes(termo))
-      );
+            if (texto.toLowerCase().includes(termo)) {
+                encontrados.push(data);
+            }
+        });
 
-      limparTabela();
-      if(filtrados.length === 0) 
-          tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental encontrado</td></tr>';
-      else 
-          filtrados.forEach(i => tabela.appendChild(montarLinha(i)));
+        if (encontrados.length === 0) {
+            resultadosDiv.innerHTML = "<p>Nenhum registro encontrado.</p>";
+            return;
+        }
+
+        resultadosDiv.innerHTML = "";
+
+        encontrados.forEach(item => {
+            resultadosDiv.innerHTML += `
+                <div class="item">
+                    <strong>Nome:</strong> ${item.nome || "-"}<br>
+                    <strong>Código:</strong> ${item.codigo || "-"}<br>
+                    <strong>Descrição:</strong> ${item.descricao || "-"}
+                </div>
+            `;
+        });
     };
 
-    function gerarQR(item){
-      const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
-      const temp = document.createElement('div');
-      new QRCode(temp, { text: url, width:260, height:260 });
-      const img = temp.querySelector('img') || temp.querySelector('canvas');
-
-      Swal.fire({
-        title: `QR — ${item.nome}`,
-        html: `<div style="display:flex; justify-content:center;">${img ? `<img src="${img.src}" style="width:220px"/>` : 'QR indisponível'}</div>` ,
-        showConfirmButton:true
-      });
-    }
-
-    btnExportCSV.onclick = () => {
-      if(!currentList.length) return Swal.fire({ icon:'info', title:'Nada para exportar' });
-      exportToCSV(currentList, 'ferramentais_export.csv');
+    // === Limpar pesquisa ===
+    window.limparPesquisa = () => {
+        document.getElementById("pesquisa").value = "";
+        const resultadosDiv = document.getElementById("resultados");
+        resultadosDiv.style.display = "none";
+        resultadosDiv.innerHTML = "";
     };
-
-    btnExportXLS.onclick = () => {
-      if(!currentList.length) return Swal.fire({ icon:'info', title:'Nada para exportar' });
-      exportToXLSX(currentList, 'ferramentais_export.xlsx');
-    };
-
-    carregarTodos();
 </script>
 
 </body>
