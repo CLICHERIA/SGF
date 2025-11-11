@@ -1,693 +1,209 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Consultar — SGF</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consulta de Ferramentais</title>
 
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
+  <!-- Estilos básicos (você pode adaptar) -->
   <style>
-    /* --------------------- */
-    /*        BASE           */
-    /* --------------------- */
     body {
-      text-align: center;
-      padding-bottom: 80px;
-      background-color: #f7f9fc;
       font-family: Arial, sans-serif;
-      transition: background 0.3s, color 0.3s;
+      background: #f0f4f9;
+      margin: 0; padding: 20px;
+      color: #222;
     }
-
-    .caixa {
+    .container {
+      max-width: 960px;
       margin: 0 auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
     }
-
-    /* --------------------- */
-    /*  BARRA DE BUSCA       */
-    /* --------------------- */
-    .hero .barra-busca {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: nowrap;
-      margin-bottom: 25px;
-    }
-
-    .hero .barra-busca input.input {
-      flex: 1;
-      max-width: 350px;
-      height: 44px;
+    h1 {
       text-align: center;
-      box-sizing: border-box;
+      color: #1a3a70;
+    }
+    input[type="text"] {
+      width: 300px;
+      padding: 8px;
+      font-size: 16px;
+      margin-right: 10px;
+      border-radius: 4px;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      transition: box-shadow 0.2s ease;
     }
-
-    .hero .barra-busca input.input:focus {
-      outline: none;
-      box-shadow: 0 0 5px #1d4ed8;
-    }
-
-    .hero .barra-busca .btn {
-      min-width: 110px;
-      height: 44px;
-      box-sizing: border-box;
+    button {
+      padding: 8px 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
       cursor: pointer;
-      border-radius: 5px;
-      font-size: 14px;
-      transition: 0.25s;
+      margin-right: 8px;
     }
-
-    /* --------------------- */
-    /*     BOTÕES PADRÃO     */
-    /* --------------------- */
-    .btn.primary {
-      background: #1d4ed8;
-      color: #fff;
-      border: none;
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
-    .btn.primary:hover {
-      background: #163fa3;
+    button.btn-primary {
+      background-color: #2563eb;
+      color: white;
     }
-
-    .btn.ghost {
-      background: transparent;
-      border: 1px solid #1d4ed8;
-      color: #1d4ed8;
+    button.btn-secondary {
+      background-color: #e5e7eb;
+      color: #111;
     }
-    .btn.ghost:hover {
-      background: #1d4ed8;
-      color: #fff;
+    button.btn-danger {
+      background-color: #dc2626;
+      color: white;
     }
-
-    .btn.btn-danger {
-      background: #dc2626;
-      color: #fff;
-      border: none;
-    }
-    .btn.btn-danger:hover {
-      background: #b91c1c;
-    }
-
-    /* --------------------- */
-    /*        TABELA         */
-    /* --------------------- */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
-
-    table th, table td {
-      text-align: center;
-      padding: 10px;
+    th, td {
       border: 1px solid #ddd;
-    }
-
-    table th {
-      background-color: #1d4ed8;
-      color: white;
-    }
-
-    table td.actions .btn {
-      padding: 6px 10px;
-      font-size: 12px;
-      margin: 2px;
-    }
-
-    /* --------------------- */
-    /*  ANIMAÇÃO FADE-IN     */
-    /* --------------------- */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    footer {
-      background: #0b2d5a;
-      color: #fff;
-      padding: 20px 0;
-      text-align: center;
-      font-size: 0.95rem;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-
-    /* --------------------- */
-    /*      MODO ESCURO      */
-    /* --------------------- */
-    body.dark {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-
-    body.dark table th {
-      background-color: #2c3e50;
-    }
-
-    body.dark table td {
-      border-color: #333;
-    }
-
-    body.dark .btn.primary {
-      background: #2563eb;
-    }
-
-    body.dark .btn.ghost {
-      border-color: #90caf9;
-      color: #90caf9;
-    }
-
-    body.dark .btn.ghost:hover {
-      background: #90caf9;
-      color: #000;
-    }
-
-    body.dark footer {
-      background: #1b2a41;
-    }
-
-    /* --------------------- */
-    /* BOTÃO DE TEMA         */
-    /* --------------------- */
-    #btnToggleDark {
-      position: absolute;
-      right: 30px;
-      top: 20px;
-      background: transparent;
-      border: 1px solid #1d4ed8;
-      border-radius: 20px;
-      padding: 8px 15px;
-      cursor: pointer;
-      color: #1d4ed8;
-      transition: 0.3s;
-    }
-
-    #btnToggleDark:hover {
-      background: #1d4ed8;
-      color: #fff;
-    }
-
-    body.dark #btnToggleDark {
-      border-color: #90caf9;
-      color: #90caf9;
-    }
-
-    body.dark #btnToggleDark:hover {
-      background: #90caf9;
-      color: #000;
-    }
-  </style>
-</head>
-
-<body>
-  <button id="btnToggleDark">🌙 Modo Noturno</button>
-
-  <section class="hero" style="padding: 60px 20px;">
-    <div class="caixa" style="max-width:1100px; width:100%; padding:40px;">
-      <header style="margin-bottom:25px;">
-        <img src="assets/img/logosovel1337.png" style="width:95px; margin-bottom:10px;" alt="logo" />
-        <h1 style="font-size:2rem; margin:0; color:#123b7a;">Consulta de Ferramentais</h1>
-        <p style="color:#4e4e4e;">Busque por SV, Nome ou NF-e</p>
-      </header>
-
-      <div class="barra-busca">
-        <input id="busca" class="input" placeholder="Digite SV, Nome ou NF-e" />
-        <button id="btnBuscar" class="btn primary">Consultar</button>
-        <button id="btnExportCSV" class="btn ghost">Exportar CSV</button>
-        <button id="btnExportPDF" class="btn primary">Exportar PDF</button>
-        <button id="btnVoltar" class="btn ghost">Voltar</button>
-      </div>
-
-      <div class="table-wrap" style="overflow-x:auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>NF-e</th>
-              <th>SV</th>
-              <th>Nome</th>
-              <th>Data</th>
-              <th>Estado</th>
-              <th>Localização</th>
-              <th>Responsável</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabela"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    © 2025 Sovel da Amazônia — Todos os direitos reservados.
-  </footer>
-
-  <script type="module">
-    console.log('Script de consultar.html iniciado');
-
-    // Detecta a base URL correta, incluindo o subdiretório SGF (GitHub Pages)
-    const base = `${window.location.origin}${window.location.pathname.includes('/SGF/') ? '/SGF' : ''}/assets/js/`;
-
-    try {
-      // Importações absolutas — corrigem o erro no GitHub Pages
-      const { buscarTodos, removerFerramental } = await import(`${base}script.js`);
-      const { exportToCSV } = await import(`${base}exporter.js`);
-
-      const tabela = document.getElementById('tabela');
-      const btnBuscar = document.getElementById('btnBuscar');
-      const btnExportCSV = document.getElementById('btnExportCSV');
-      const btnExportPDF = document.getElementById('btnExportPDF');
-      const btnVoltar = document.getElementById('btnVoltar');
-      const btnToggleDark = document.getElementById('btnToggleDark');
-      const body = document.body;
-
-      // ---------- MODO ESCURO ----------
-      if (localStorage.getItem('darkMode') === 'true') {
-        body.classList.add('dark');
-        btnToggleDark.textContent = '☀️ Modo Claro';
-      }
-
-      btnToggleDark.onclick = () => {
-        body.classList.toggle('dark');
-        const darkAtivo = body.classList.contains('dark');
-        localStorage.setItem('darkMode', darkAtivo);
-        btnToggleDark.textContent = darkAtivo ? '☀️ Modo Claro' : '🌙 Modo Noturno';
-      };
-
-      // ---------- FUNCIONALIDADES ----------
-      let currentList = [];
-
-      function limparTabela() { tabela.innerHTML = ''; }
-
-      function montarLinha(item) {
-        const tr = document.createElement('tr');
-        tr.classList.add('fade-in');
-        tr.innerHTML = `
-          <td>${item.tipo || ''}</td>
-          <td>${item.nfe || ''}</td>
-          <td>${item.sv || ''}</td>
-          <td>${item.nome || ''}</td>
-          <td>${item.dataRegistro || ''}</td>
-          <td>${item.estado || ''}</td>
-          <td>${item.localizacao || ''}</td>
-          <td>${(item.responsavel || '').split('@')[0] || ''}</td>
-          <td class="actions">
-            <button class="btn ghost editar">Editar</button>
-            <button class="btn btn-danger excluir">Excluir</button>
-            <button class="btn ghost qrbtn">QR</button>
-            <button class="btn ghost qrExport">Exportar QR</button>
-          </td>
-        `;
-
-        tr.querySelector('.editar').onclick = () => location.href = `editar.html?id=${item.id}`;
-
-        tr.querySelector('.excluir').onclick = async () => {
-          const res = await Swal.fire({
-            icon: 'warning',
-            title: 'Excluir?',
-            text: 'Deseja realmente excluir esse registro?',
-            showCancelButton: true
-          });
-
-          if (res.isConfirmed) {
-            const ok = await removerFerramental(item.id);
-            if (ok) tr.remove();
-          }
-        };
-
-        tr.querySelector('.qrbtn').onclick = () => gerarQR(item);
-        tr.querySelector('.qrExport').onclick = () => exportarQR(item);
-
-        return tr;
-      }
-
-      async function carregarTodos() {
-        try {
-          limparTabela();
-          const arr = await buscarTodos();
-          currentList = arr;
-
-          if (arr.length === 0)
-            tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental cadastrado</td></tr>';
-          else
-            arr.forEach(i => tabela.appendChild(montarLinha(i)));
-        } catch (error) {
-          console.error('Erro ao carregar dados:', error);
-          Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao carregar dados.' });
-        }
-      }
-
-      btnBuscar.onclick = () => {
-        const termo = document.getElementById('busca').value.trim().toLowerCase();
-        if (!termo) return carregarTodos();
-
-        const filtrados = currentList.filter(it =>
-          (it.sv && it.sv.toLowerCase().includes(termo)) ||
-          (it.nome && it.nome.toLowerCase().includes(termo)) ||
-          (it.nfe && it.nfe.toLowerCase().includes(termo))
-        );
-
-        limparTabela();
-
-        if (filtrados.length === 0)
-          tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental encontrado</td></tr>';
-        else
-          filtrados.forEach(i => tabela.appendChild(montarLinha(i)));
-      };
-
-      function gerarQR(item) {
-        const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
-        const temp = document.createElement('div');
-        new QRCode(temp, { text: url, width: 280, height: 280 });
-        const img = temp.querySelector('img');
-        Swal.fire({
-          title: `QR — ${item.nome}`,
-          html: `<div style="display:flex; justify-content:center;"><img src="${img.src}" style="width:220px"/></div>`,
-          showConfirmButton: true
-        });
-      }
-
-      function exportarQR(item) {
-        const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
-        const qrDiv = document.createElement('div');
-        new QRCode(qrDiv, { text: url, width: 600, height: 600 });
-        setTimeout(() => {
-          const img = qrDiv.querySelector('img').src;
-          const a = document.createElement('a');
-          a.href = img;
-          a.download = `QR_${item.sv || item.nome}.png`;
-          a.click();
-        }, 500);
-      }
-
-      btnExportCSV.onclick = () => {
-        if (!currentList.length)
-          return Swal.fire({ icon: 'info', title: 'Nada para exportar' });
-
-        try { exportToCSV(currentList, 'ferramentais.csv'); }
-        catch (error) {
-          Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao exportar CSV.' });
-        }
-      };
-
-      btnExportPDF.onclick = () => window.print();
-      btnVoltar.onclick = () => location.href = 'menu.html';
-      carregarTodos();
-
-    } catch (error) {
-      console.error('Erro ao importar ou executar script:', error);
-      alert('Erro interno: Falha ao carregar dependências. Detalhes: ' + error.message);
-    }
-  </script>
-</body>
-</html>
-      flex-wrap: nowrap;
-      margin-bottom: 25px;
-    }
-
-    .hero .barra-busca input.input {
-      flex: 1;
-      max-width: 350px;
-      height: 44px;
-      text-align: center;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      transition: box-shadow 0.2s ease;
-    }
-
-    .hero .barra-busca input.input:focus {
-      outline: none;
-      box-shadow: 0 0 5px #1d4ed8;
-    }
-
-    .hero .barra-busca .btn {
-      min-width: 110px;
-      height: 44px;
-      box-sizing: border-box;
-      cursor: pointer;
-      border-radius: 5px;
+      padding: 8px 10px;
+      text-align: left;
       font-size: 14px;
-      transition: 0.25s;
     }
-
-    /* --------------------- */
-    /*     BOTÕES PADRÃO     */
-    /* --------------------- */
-    .btn.primary {
-      background: #1d4ed8;
-      color: #fff;
-      border: none;
-    }
-    .btn.primary:hover {
-      background: #163fa3;
-    }
-
-    .btn.ghost {
-      background: transparent;
-      border: 1px solid #1d4ed8;
-      color: #1d4ed8;
-    }
-    .btn.ghost:hover {
-      background: #1d4ed8;
-      color: #fff;
-    }
-
-    .btn.btn-danger {
-      background: #dc2626;
-      color: #fff;
-      border: none;
-    }
-    .btn.btn-danger:hover {
-      background: #b91c1c;
-    }
-
-    /* --------------------- */
-    /*        TABELA         */
-    /* --------------------- */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    table th, table td {
-      text-align: center;
-      padding: 10px;
-      border: 1px solid #ddd;
-    }
-
-    table th {
-      background-color: #1d4ed8;
+    th {
+      background-color: #1a3a70;
       color: white;
-    }
-
-    table td.actions .btn {
-      padding: 6px 10px;
-      font-size: 12px;
-      margin: 2px;
-    }
-
-    /* --------------------- */
-    /*  ANIMAÇÃO FADE-IN     */
-    /* --------------------- */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    footer {
-      background: #0b2d5a;
-      color: #fff;
-      padding: 20px 0;
-      text-align: center;
-      font-size: 0.95rem;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-
-    /* --------------------- */
-    /*      MODO ESCURO      */
-    /* --------------------- */
-    body.dark {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-
-    body.dark table th {
-      background-color: #2c3e50;
-    }
-
-    body.dark table td {
-      border-color: #333;
-    }
-
-    body.dark .btn.primary {
-      background: #2563eb;
-    }
-
-    body.dark .btn.ghost {
-      border-color: #90caf9;
-      color: #90caf9;
-    }
-
-    body.dark .btn.ghost:hover {
-      background: #90caf9;
-      color: #000;
-    }
-
-    body.dark footer {
-      background: #1b2a41;
-    }
-
-    /* --------------------- */
-    /* BOTÃO DE TEMA         */
-    /* --------------------- */
-    #btnToggleDark {
-      position: absolute;
-      right: 30px;
-      top: 20px;
-      background: transparent;
-      border: 1px solid #1d4ed8;
-      border-radius: 20px;
-      padding: 8px 15px;
-      cursor: pointer;
-      color: #1d4ed8;
-      transition: 0.3s;
-    }
-
-    #btnToggleDark:hover {
-      background: #1d4ed8;
-      color: #fff;
-    }
-
-    body.dark #btnToggleDark {
-      border-color: #90caf9;
-      color: #90caf9;
-    }
-
-    body.dark #btnToggleDark:hover {
-      background: #90caf9;
-      color: #000;
     }
   </style>
 </head>
-
 <body>
-  <button id="btnToggleDark">🌙 Modo Noturno</button>
+  <div class="container">
+    <h1>Consulta de Ferramentais</h1>
+    <p style="text-align:center; margin-bottom: 20px;">Busque por SV, Nome ou NF-e</p>
 
-  <section class="hero" style="padding: 60px 20px;">
-    <div class="caixa" style="max-width:1100px; width:100%; padding:40px;">
-      <header style="margin-bottom:25px;">
-        <img src="assets/img/logosovel1337.png" style="width:95px; margin-bottom:10px;" alt="logo" />
-        <h1 style="font-size:2rem; margin:0; color:#123b7a;">Consulta de Ferramentais</h1>
-        <p style="color:#4e4e4e;">Busque por SV, Nome ou NF-e</p>
-      </header>
-
-      <!-- Barra de busca -->
-      <div class="barra-busca">
-        <input id="busca" class="input" placeholder="Digite SV, Nome ou NF-e" />
-        <button id="btnBuscar" class="btn primary">Consultar</button>
-        <button id="btnExportCSV" class="btn ghost">Exportar CSV</button>
-        <button id="btnExportPDF" class="btn primary">Exportar PDF</button>
-        <button id="btnVoltar" class="btn ghost">Voltar</button>
-      </div>
-
-      <!-- Tabela -->
-      <div class="table-wrap" style="overflow-x:auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>NF-e</th>
-              <th>SV</th>
-              <th>Nome</th>
-              <th>Data</th>
-              <th>Estado</th>
-              <th>Localização</th>
-              <th>Responsável</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabela"></tbody>
-        </table>
-      </div>
+    <div style="text-align:center; margin-bottom: 20px;">
+      <input type="text" id="inputBusca" placeholder="Digite SV, Nome ou NF-e" />
+      <button id="btnConsultar" class="btn btn-primary">Consultar</button>
+      <button id="btnCSV" class="btn btn-secondary">Exportar CSV</button>
+      <button id="btnPDF" class="btn btn-secondary">Exportar PDF</button>
+      <button id="btnVoltar" class="btn btn-danger">Voltar</button>
     </div>
-  </section>
 
-  <footer>
-    © 2025 Sovel da Amazônia — Todos os direitos reservados.
-  </footer>
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>NF-e</th>
+          <th>SV</th>
+          <th>Nome</th>
+          <th>Data</th>
+          <th>Estado</th>
+          <th>Localização</th>
+          <th>Responsável</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaFerramentais">
+        <tr><td colspan="9" style="text-align:center;">Nenhum registro carregado</td></tr>
+      </tbody>
+    </table>
+  </div>
 
+  <!-- Firebase SDKs e configuração -->
   <script type="module">
-    console.log('Script de consultar.html iniciado');
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
-    // ========================
-    //    MODO ESCURO
-    // ========================
-    const btnToggleDark = document.getElementById('btnToggleDark');
-    const body = document.body;
+    // Configuração Firebase (substitua pelos seus dados)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAAMyXl5uWSWYNAy-... (EXEMPLO)",
+  authDomain: "dacsovel-53481.firebaseapp.com",
+  projectId: "dacsovel-53481",
+  storageBucket: "dacsovel-53481.appspot.com",
+  messagingSenderId: "37867522513",
+  appId: "1:37867522513:web:336d687e3fc8408bd138f0"
+};
 
-    if (localStorage.getItem('darkMode') === 'true') {
-      body.classList.add('dark');
-      btnToggleDark.textContent = '☀️ Modo Claro';
-    }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    btnToggleDark.onclick = () => {
-      body.classList.toggle('dark');
-      const darkAtivo = body.classList.contains('dark');
-      localStorage.setItem('darkMode', darkAtivo);
-      btnToggleDark.textContent = darkAtivo ? '☀️ Modo Claro' : '🌙 Modo Noturno';
+    // Exportar funções para usar fora do módulo
+    window.db = db;
+    window.auth = auth;
+
+    // Funções de acesso ao Firestore (igual script.js original)
+    window.buscarTodos = async () => {
+      try {
+        const col = collection(db, "ferramentais");
+        const q = query(col, orderBy("dataRegistro", "desc"));
+        const snap = await getDocs(q);
+        const arr = [];
+        snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
+        return arr;
+      } catch (err) {
+        console.error("Erro ao buscar todos:", err);
+        throw err;
+      }
     };
 
-    // ========================
-    //    FUNCIONALIDADES
-    // ========================
-    try {
-      const { buscarTodos, removerFerramental } = await import('./assets/js/script.js');
-      const { exportToCSV } = await import('./assets/js/exporter.js');
+    window.removerFerramental = async (id) => {
+      try {
+        await deleteDoc(doc(db, "ferramentais", id));
+        Swal.fire({ icon: "success", title: "Removido", text: "Registro excluído." });
+        // Atualiza a tabela após remoção
+        btnConsultar.click();
+      } catch (err) {
+        Swal.fire({ icon: "error", title: "Erro ao excluir", text: err.message });
+      }
+    };
+  </script>
 
-      const tabela = document.getElementById('tabela');
-      const btnBuscar = document.getElementById('btnBuscar');
-      const btnExportCSV = document.getElementById('btnExportCSV');
-      const btnExportPDF = document.getElementById('btnExportPDF');
-      const btnVoltar = document.getElementById('btnVoltar');
+  <!-- Biblioteca XLSX (para exportação Excel) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-      let currentList = [];
+  <!-- SweetAlert2 (alertas) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-      function limparTabela() { tabela.innerHTML = ''; }
+  <!-- jsPDF (para PDF básico) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-      function montarLinha(item) {
+  <!-- Funções Exporter (CSV/XLSX) -->
+  <script>
+    function exportToCSV(dataArray, filename = 'export.csv') {
+      const headers = ['id','tipo','nfe','sv','nome','dataRegistro','estado','localizacao','responsavel'];
+      const rows = dataArray.map(item => headers.map(h => item[h] || ''));
+      const csv = [headers.join(','), ...rows.map(r => r.map(s => `"${String(s).replace(/"/g,'""')}"`).join(','))].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  </script>
+
+  <!-- Script da página -->
+  <script>
+    const btnConsultar = document.getElementById('btnConsultar');
+    const btnCSV = document.getElementById('btnCSV');
+    const btnPDF = document.getElementById('btnPDF');
+    const btnVoltar = document.getElementById('btnVoltar');
+    const inputBusca = document.getElementById('inputBusca');
+    const tabela = document.getElementById('tabelaFerramentais');
+
+    let dadosAtuais = [];
+
+    function renderTabela(data) {
+      tabela.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        tabela.innerHTML = '<tr><td colspan="9" style="text-align:center;">Nenhum registro encontrado</td></tr>';
+        return;
+      }
+
+      data.forEach(item => {
         const tr = document.createElement('tr');
-        tr.classList.add('fade-in'); // Aplica a animação ao inserir linha
         tr.innerHTML = `
           <td>${item.tipo || ''}</td>
           <td>${item.nfe || ''}</td>
@@ -696,119 +212,61 @@
           <td>${item.dataRegistro || ''}</td>
           <td>${item.estado || ''}</td>
           <td>${item.localizacao || ''}</td>
-          <td>${(item.responsavel || '').split('@')[0] || ''}</td>
-          <td class="actions">
-            <button class="btn ghost editar">Editar</button>
-            <button class="btn btn-danger excluir">Excluir</button>
-            <button class="btn ghost qrbtn">QR</button>
-            <button class="btn ghost qrExport">Exportar QR</button>
+          <td>${item.responsavel || ''}</td>
+          <td>
+            <button class="btn btn-danger" onclick="removerFerramental('${item.id}')">Excluir</button>
           </td>
         `;
-
-        tr.querySelector('.editar').onclick = () => location.href = `editar.html?id=${item.id}`;
-
-        tr.querySelector('.excluir').onclick = async () => {
-          const res = await Swal.fire({
-            icon: 'warning',
-            title: 'Excluir?',
-            text: 'Deseja realmente excluir esse registro?',
-            showCancelButton: true
-          });
-
-          if (res.isConfirmed) {
-            const ok = await removerFerramental(item.id);
-            if (ok) tr.remove();
-          }
-        };
-
-        tr.querySelector('.qrbtn').onclick = () => gerarQR(item);
-        tr.querySelector('.qrExport').onclick = () => exportarQR(item);
-
-        return tr;
-      }
-
-      async function carregarTodos() {
-        try {
-          limparTabela();
-          const arr = await buscarTodos();
-          currentList = arr;
-
-          if (arr.length === 0)
-            tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental cadastrado</td></tr>';
-          else
-            arr.forEach(i => tabela.appendChild(montarLinha(i)));
-        } catch (error) {
-          console.error('Erro ao carregar dados:', error);
-          Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao carregar dados.' });
-        }
-      }
-
-      btnBuscar.onclick = () => {
-        const termo = document.getElementById('busca').value.trim().toLowerCase();
-        if (!termo) return carregarTodos();
-
-        const filtrados = currentList.filter(it =>
-          (it.sv && it.sv.toLowerCase().includes(termo)) ||
-          (it.nome && it.nome.toLowerCase().includes(termo)) ||
-          (it.nfe && it.nfe.toLowerCase().includes(termo))
-        );
-
-        limparTabela();
-
-        if (filtrados.length === 0)
-          tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental encontrado</td></tr>';
-        else
-          filtrados.forEach(i => tabela.appendChild(montarLinha(i)));
-      };
-
-      function gerarQR(item) {
-        const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
-        const temp = document.createElement('div');
-        new QRCode(temp, { text: url, width: 280, height: 280 });
-
-        const img = temp.querySelector('img');
-        Swal.fire({
-          title: `QR — ${item.nome}`,
-          html: `<div style="display:flex; justify-content:center;"><img src="${img.src}" style="width:220px"/></div>`,
-          showConfirmButton: true
-        });
-      }
-
-      function exportarQR(item) {
-        const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
-        const qrDiv = document.createElement('div');
-        new QRCode(qrDiv, { text: url, width: 600, height: 600 });
-
-        setTimeout(() => {
-          const img = qrDiv.querySelector('img').src;
-          const a = document.createElement('a');
-          a.href = img;
-          a.download = `QR_${item.sv || item.nome}.png`;
-          a.click();
-        }, 500);
-      }
-
-      btnExportCSV.onclick = () => {
-        if (!currentList.length)
-          return Swal.fire({ icon: 'info', title: 'Nada para exportar' });
-
-        try {
-          exportToCSV(currentList, 'ferramentais.csv');
-        } catch (error) {
-          Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao exportar CSV.' });
-        }
-      };
-
-      btnExportPDF.onclick = () => window.print();
-      btnVoltar.onclick = () => location.href = 'menu.html';
-
-      carregarTodos();
-
-    } catch (error) {
-      console.error('Erro ao importar ou executar script:', error);
-      alert('Erro interno: Falha ao carregar dependências. Detalhes: ' + error.message);
+        tabela.appendChild(tr);
+      });
     }
+
+    btnConsultar.addEventListener('click', async () => {
+      const termo = inputBusca.value.trim().toLowerCase();
+      btnConsultar.disabled = true;
+      btnConsultar.textContent = "Buscando...";
+
+      try {
+        const todos = await buscarTodos();
+        dadosAtuais = termo
+          ? todos.filter(item =>
+              (item.nome || '').toLowerCase().includes(termo) ||
+              (item.sv || '').toLowerCase().includes(termo) ||
+              (item.nfe || '').toLowerCase().includes(termo)
+            )
+          : todos;
+
+        renderTabela(dadosAtuais);
+      } catch (err) {
+        Swal.fire({ icon: "error", title: "Erro na consulta", text: err.message });
+      }
+
+      btnConsultar.disabled = false;
+      btnConsultar.textContent = "Consultar";
+    });
+
+    btnCSV.addEventListener('click', () => {
+      if (!dadosAtuais.length) return Swal.fire({ icon: "error", title: "Sem dados", text: "Nenhum registro para exportar." });
+      exportToCSV(dadosAtuais, 'ferramentais.csv');
+    });
+
+    btnPDF.addEventListener('click', async () => {
+      if (!dadosAtuais.length) return Swal.fire({ icon: "error", title: "Sem dados", text: "Nenhum registro para exportar." });
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Consulta de Ferramentais", 14, 15);
+      let y = 25;
+      dadosAtuais.forEach((item, i) => {
+        doc.text(`${i + 1}. ${item.nome || ''} (${item.sv || ''}) - ${item.estado || ''}`, 14, y);
+        y += 8;
+      });
+      doc.save("ferramentais.pdf");
+    });
+
+    btnVoltar.addEventListener('click', () => {
+      window.location.href = 'dashboard.html';
+    });
   </script>
 </body>
 </html>
-
