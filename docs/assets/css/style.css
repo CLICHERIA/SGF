@@ -215,3 +215,82 @@ body {
     align-items: stretch;
   }
 }
+/* RODAPÉ SOVEL */
+.footer {
+  background: #1f5da0; /* azul corporativo Sovel */
+  color: white;
+  padding: 40px 60px 25px;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Esquerda */
+.footer-left {
+  max-width: 280px;
+}
+
+.footer-logo {
+  width: 140px;
+  margin-bottom: 12px;
+}
+
+.footer-about {
+  line-height: 1.4;
+  color: #e6e6e6;
+}
+
+.social-links {
+  margin-top: 15px;
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  width: 28px;
+  opacity: .85;
+  transition: .2s;
+}
+
+.icon:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Centro */
+.footer-center .footer-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.footer-ico {
+  font-size: 1.4rem;
+}
+
+/* Direita */
+.footer-map {
+  width: 300px;
+}
+
+/* Linha */
+.footer-line {
+  margin-top: 30px;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.25);
+}
+
+/* Copyright */
+.footer-copy {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #e6e6e6;
+}
+
+
