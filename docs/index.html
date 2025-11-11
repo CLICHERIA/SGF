@@ -5,222 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Gestão de Ferramentais — Grupo Sovel</title>
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Inter", Arial, sans-serif;
-    }
-
-    body {
-        background: linear-gradient(
-            180deg,
-            #eef3f9 0%,
-            #f5f7fa 40%,
-            #ffffff 100%
-        );
-        color: #2b2b2b;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Container principal */
-    .hero {
-        padding: 50px 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
-
-    .caixa {
-        background: #ffffff;
-        padding: 50px 70px;
-        border-radius: 18px;
-        width: 650px;
-        text-align: center;
-        box-shadow: 0 8px 28px rgba(0,0,0,0.09);
-        border: 1px solid #e6e9ef;
-        animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .titulo {
-        font-size: 2.4rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #123b7a;
-    }
-
-    .sub {
-        font-size: 1.05rem;
-        color: #4e4e4e;
-        margin-bottom: 35px;
-    }
-
-    input {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-    }
-
-    .btn {
-        padding: 14px 34px;
-        border-radius: 10px;
-        border: none;
-        background: #1d5cc6;
-        color: #fff;
-        font-size: 1.15rem;
-        font-weight: 600;
-        cursor: pointer;
-        text-decoration: none;
-        transition: 0.3s;
-        box-shadow: 0 4px 16px rgba(29, 92, 198, 0.28);
-        display: inline-block;
-        width: 100%;
-    }
-
-    .btn:hover {
-        background: #174da7;
-        box-shadow: 0 6px 20px rgba(29, 92, 198, 0.38);
-        transform: translateY(-2px);
-    }
-
-    /* Rodapé */
-    footer {
-        background: #123b7a;
-        padding: 50px 40px;
-        margin-top: auto;
-        color: white;
-        width: 100%;
-    }
-
-    .footer-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 40px;
-        max-width: 1200px;
-        margin: auto;
-    }
-
-    .footer-col {
-        font-size: 0.95rem;
-        line-height: 1.7;
-        opacity: 0.93;
-    }
-
-    .footer-col img {
-        width: 160px;
-        margin-bottom: 10px;
-    }
-
-    iframe {
-        width: 100%;
-        height: 200px;
-        border-radius: 12px;
-        border: none;
-    }
-
-    .footer-bottom {
-        margin-top: 40px;
-        text-align: center;
-        opacity: 0.75;
-        font-size: 0.85rem;
-    }
-
-    /* Modal de carregamento */
-    #loader {
-        position: fixed;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background:white;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        z-index:1000;
-        flex-direction:column;
-    }
-</style>
-</head>
-
-<body>
-
-<!-- Loader / Login -->
-<div id="loader">
-    <div class="caixa">
-        <h1 class="titulo">Login Necessário</h1>
-        <div class="sub">
-            Entre com seu e-mail e senha cadastrados no sistema
-        </div>
-        <input type="email" id="email" placeholder="E-mail" />
-        <input type="password" id="senha" placeholder="Senha" />
-        <button class="btn" id="loginBtn">Entrar</button>
-    </div>
-</div>
-
-<!-- Conteúdo principal -->
-<section class="hero" id="mainContent" style="display:none;">
-    <div class="caixa">
-        <h1 class="titulo">Gestão de Ferramentais</h1>
-        <div class="sub">
-            Grupo Sovel — Departamento de Amostras e Clicheria
-        </div>
-
-        <a href="menu.html" class="btn">Acessar Menu Interativo</a>
-    </div>
-</section>
-
-<footer id="mainFooter" style="display:none;">
-    <div class="footer-grid">
-
-        <div class="footer-col">
-            <img src="assets/img/logosovel1337.png" />
-            <p></p>
-        </div>
-
-        <div class="footer-col">
-            📍 Rua Dr. João de Paulo, 600 — Colônia Antônio Aleixo<br>
-            Manaus - AM<br><br>
-
-            📞 (92) 9 8202-0067<br><br>
-
-            🕒 Seg–Qui: 7h às 17h<br>
-            🕒 Sexta: 7h às 16h
-        </div>
-
-        <div class="footer-col">
-            <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-59.97%2C-3.15%2C-59.95%2C-3.12&amp;layer=mapnik&amp;marker=-3.13%2C-59.96"></iframe>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2025 Sovel da Amazônia — Todos os direitos reservados.
-    </div>
-</footer>
-
-<!-- Firebase e Script de Login -->
+<!-- Firebase SDK -->
 <script type="module">
-    // Import Firebase Auth
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
-    // Configuração do Firebase (substitua pelos seus dados)
-    const firebaseConfig = {
-        apiKey: "AIzaSyAAMyXl5uWSWYNAy-qZBy3N3yU84mdS73w",
+  const firebaseConfig = {
+    apiKey: "AIzaSyAAMyXl5uWSWYNAy-qZBy3N3yU84mdS73w",
   authDomain: "dacsovel-53481.firebaseapp.com",
   projectId: "dacsovel-53481",
   storageBucket: "dacsovel-53481.firebasestorage.app",
@@ -228,37 +19,110 @@
   appId: "1:37867522513:web:336d687e3fc8408bd138f0",
 };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    const loginBtn = document.getElementById('loginBtn');
-    const loader = document.getElementById('loader');
-    const mainContent = document.getElementById('mainContent');
-    const mainFooter = document.getElementById('mainFooter');
+  window.loginUser = async () => {
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
 
-    loginBtn.addEventListener('click', async () => {
-        const email = document.getElementById('email').value;
-        const senha = document.getElementById('senha').value;
+    try {
+      await signInWithEmailAndPassword(auth, email, senha);
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'flex';
+    } catch (error) {
+      alert("Erro ao logar: " + error.message);
+    }
+  }
 
-        try {
-            await signInWithEmailAndPassword(auth, email, senha);
-            loader.style.display = 'none';
-            mainContent.style.display = 'flex';
-            mainFooter.style.display = 'block';
-        } catch (error) {
-            alert("E-mail ou senha inválidos. Tente novamente.");
-        }
-    });
-
-    // Mantém o usuário logado
-    onAuthStateChanged(auth, user => {
-        if(user){
-            loader.style.display = 'none';
-            mainContent.style.display = 'flex';
-            mainFooter.style.display = 'block';
-        }
-    });
+  // Bloquear acesso direto ao menu se não estiver logado
+  onAuthStateChanged(auth, user => {
+    if(user){
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'flex';
+    }
+  });
 </script>
+
+<style>
+    * {margin:0; padding:0; box-sizing:border-box; font-family:"Inter", Arial, sans-serif;}
+    body {background: linear-gradient(180deg, #eef3f9 0%, #f5f7fa 40%, #ffffff 100%); color:#2b2b2b; min-height:100vh; display:flex; flex-direction:column;}
+
+    /* Container principal */
+    .hero {padding:130px 20px; display:flex; justify-content:center; align-items:center;}
+    .caixa {background:#ffffff; padding:50px 70px; border-radius:18px; width:650px; text-align:center; box-shadow:0 8px 28px rgba(0,0,0,0.09); border:1px solid #e6e9ef; animation:fadeIn 0.4s ease;}
+
+    @keyframes fadeIn {from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);}}
+
+    .titulo {font-size:2.4rem; font-weight:700; margin-bottom:10px; color:#123b7a;}
+    .sub {font-size:1.05rem; color:#4e4e4e; margin-bottom:35px;}
+
+    input {width:80%; padding:12px 15px; margin-bottom:20px; border-radius:8px; border:1px solid #ccc; font-size:1rem;}
+    .btn {padding:14px 34px; border-radius:10px; border:none; background:#1d5cc6; color:#fff; font-size:1.15rem; font-weight:600; cursor:pointer; text-decoration:none; transition:0.3s; box-shadow:0 4px 16px rgba(29,92,198,0.28); display:inline-block;}
+    .btn:hover {background:#174da7; box-shadow:0 6px 20px rgba(29,92,198,0.38); transform:translateY(-2px);}
+    .btn.secondary {background:#555;}
+    .btn.secondary:hover {background:#333;}
+
+    footer {background:#123b7a; padding:50px 40px; margin-top:auto; color:white;}
+    .footer-grid {display:grid; grid-template-columns:1fr 1fr 1fr; gap:40px; max-width:1200px; margin:auto;}
+    .footer-col {font-size:0.95rem; line-height:1.7; opacity:0.93;}
+    .footer-col img {width:160px; margin-bottom:10px;}
+    iframe {width:100%; height:200px; border-radius:12px; border:none;}
+    .footer-bottom {margin-top:40px; text-align:center; opacity:0.75; font-size:0.85rem;}
+</style>
+</head>
+
+<body>
+
+<!-- FORMULÁRIO DE LOGIN -->
+<section class="hero" id="loginForm">
+  <div class="caixa">
+    <h1 class="titulo">Entrar no Sistema</h1>
+    <div class="sub">Digite seu e-mail e senha para acessar o sistema</div>
+
+    <input type="email" id="email" placeholder="E-mail" required />
+    <input type="password" id="senha" placeholder="Senha" required />
+    <br>
+    <button class="btn" onclick="loginUser()">Entrar</button>
+  </div>
+</section>
+
+<!-- CONTEÚDO PRINCIPAL APÓS LOGIN -->
+<section class="hero" id="mainContent" style="display:none;">
+    <div class="caixa">
+        <h1 class="titulo">Gestão de Ferramentais</h1>
+        <div class="sub">Grupo Sovel — Departamento de Amostras e Clicheria</div>
+        <button class="btn" id="menuBtn">Acessar Menu Interativo</button>
+    </div>
+</section>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  menuBtn.addEventListener('click', () => {
+    window.location.href = 'menu.html';
+  });
+</script>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <img src="assets/img/logosovel1337.png" />
+        </div>
+        <div class="footer-col">
+            📍 Rua Dr. João de Paulo, 600 — Colônia Antônio Aleixo<br>
+            Manaus - AM<br><br>
+            📞 (92) 9 8202-0067<br><br>
+            🕒 Seg–Qui: 7h às 17h<br>
+            🕒 Sexta: 7h às 16h
+        </div>
+        <div class="footer-col">
+            <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-59.97%2C-3.15%2C-59.95%2C-3.12&amp;layer=mapnik&amp;marker=-3.13%2C-59.96"></iframe>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 Sovel da Amazônia — Todos os direitos reservados.
+    </div>
+</footer>
 
 </body>
 </html>
