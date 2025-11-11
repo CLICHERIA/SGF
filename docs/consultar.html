@@ -15,6 +15,7 @@
       /* Centralização geral */
       body {
         text-align: center;
+        padding-bottom: 80px; /* Espaço para o rodapé fixo */
       }
 
       .caixa {
@@ -24,7 +25,24 @@
       .hero input.input {
         height: 44px;
         width: 280px;
+        min-width: 200px; /* Evita desalinhamento em telas pequenas */
         text-align: center;
+        box-sizing: border-box; /* Inclui padding/border na largura */
+      }
+
+      /* Alinhamento da barra de busca */
+      .hero .barra-busca {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Alinha verticalmente */
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+      }
+
+      .hero .barra-busca .btn {
+        min-width: 100px; /* Largura consistente para botões */
+        box-sizing: border-box;
       }
 
       table th, table td {
@@ -36,8 +54,12 @@
         color: #fff;
         padding: 20px 0;
         text-align: center;
-        margin-top: 40px;
         font-size: 0.95rem;
+        position: fixed; /* Fixa no fundo */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000; /* Garante que fique acima de outros elementos */
       }
   </style>
 
@@ -60,13 +82,13 @@
         <!-- ========================= -->
         <!--     BARRA DE BUSCA        -->
         <!-- ========================= -->
-        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:25px;">
+        <div class="barra-busca">
             <input id="busca" class="input" placeholder="Digite SV, Nome ou NF-e" />
 
             <button id="btnBuscar" class="btn">Consultar</button>
             <button id="btnExportCSV" class="btn ghost">Exportar CSV</button>
             <button id="btnExportPDF" class="btn">Exportar PDF</button>
-            <button id="btnVoltar" class="btn ghost" onclick="location.href='menu.html'">Voltar</button>
+            <button id="btnVoltar" class="btn ghost">Voltar</button>
         </div>
 
         <!-- ========================= -->
@@ -108,129 +130,151 @@
     import { buscarTodos, removerFerramental } from './assets/js/script.js';
     import { exportToCSV } from './assets/js/exporter.js';
 
-    const tabela = document.getElementById('tabela');
-    const btnBuscar = document.getElementById('btnBuscar');
-    const btnExportCSV = document.getElementById('btnExportCSV');
-    const btnExportPDF = document.getElementById('btnExportPDF');
+    // Aguarda o DOM carregar
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabela = document.getElementById('tabela');
+        const btnBuscar = document.getElementById('btnBuscar');
+        const btnExportCSV = document.getElementById('btnExportCSV');
+        const btnExportPDF = document.getElementById('btnExportPDF');
+        const btnVoltar = document.getElementById('btnVoltar');
 
-    let currentList = [];
+        let currentList = [];
 
-    function limparTabela(){ tabela.innerHTML = ''; }
+        function limparTabela(){ tabela.innerHTML = ''; }
 
-    function montarLinha(item){
-      const tr = document.createElement('tr');
+        function montarLinha(item){
+          const tr = document.createElement('tr');
 
-      tr.innerHTML = `
-        <td>${item.tipo || ''}</td>
-        <td>${item.nfe || ''}</td>
-        <td>${item.sv || ''}</td>
-        <td>${item.nome || ''}</td>
-        <td>${item.dataRegistro || ''}</td>
-        <td>${item.estado || ''}</td>
-        <td>${item.localizacao || ''}</td>
-        <td>${(item.responsavel||'').split('@')[0] || ''}</td>
-        <td class="actions">
-          <button class="btn ghost editar">Editar</button>
-          <button class="btn btn-danger excluir">Excluir</button>
-          <button class="btn ghost qrbtn">QR</button>
-          <button class="btn ghost qrExport">Exportar QR</button>
-        </td>
-      `;
+          tr.innerHTML = `
+            <td>${item.tipo || ''}</td>
+            <td>${item.nfe || ''}</td>
+            <td>${item.sv || ''}</td>
+            <td>${item.nome || ''}</td>
+            <td>${item.dataRegistro || ''}</td>
+            <td>${item.estado || ''}</td>
+            <td>${item.localizacao || ''}</td>
+            <td>${(item.responsavel||'').split('@')[0] || ''}</td>
+            <td class="actions">
+              <button class="btn ghost editar">Editar</button>
+              <button class="btn btn-danger excluir">Excluir</button>
+              <button class="btn ghost qrbtn">QR</button>
+              <button class="btn ghost qrExport">Exportar QR</button>
+            </td>
+          `;
 
-      tr.querySelector('.editar').onclick = () =>
-        location.href = `editar.html?id=${item.id}`;
+          tr.querySelector('.editar').onclick = () =>
+            location.href = `editar.html?id=${item.id}`;
 
-      tr.querySelector('.excluir').onclick = async () => {
-        const res = await Swal.fire({
-          icon:'warning',
-          title:'Excluir?',
-          text:'Deseja realmente excluir esse registro?',
-          showCancelButton:true
-        });
+          tr.querySelector('.excluir').onclick = async () => {
+            const res = await Swal.fire({
+              icon:'warning',
+              title:'Excluir?',
+              text:'Deseja realmente excluir esse registro?',
+              showCancelButton:true
+            });
 
-        if (res.isConfirmed) {
-          const ok = await removerFerramental(item.id);
-          if(ok) tr.remove();
+            if (res.isConfirmed) {
+              const ok = await removerFerramental(item.id);
+              if(ok) tr.remove();
+            }
+          };
+
+          tr.querySelector('.qrbtn').onclick = () => gerarQR(item);
+          tr.querySelector('.qrExport').onclick = () => exportarQR(item);
+
+          return tr;
         }
-      };
 
-      tr.querySelector('.qrbtn').onclick = () => gerarQR(item);
-      tr.querySelector('.qrExport').onclick = () => exportarQR(item);
+        async function carregarTodos(){
+          try {
+            limparTabela();
+            const arr = await buscarTodos();
+            currentList = arr;
 
-      return tr;
-    }
+            if(arr.length === 0)
+              tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental cadastrado</td></tr>';
+            else
+              arr.forEach(i => tabela.appendChild(montarLinha(i)));
+          } catch (error) {
+            console.error('Erro ao carregar dados:', error);
+            Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao carregar dados.' });
+          }
+        }
 
-    async function carregarTodos(){
-      limparTabela();
-      const arr = await buscarTodos();
-      currentList = arr;
+        btnBuscar.onclick = () => {
+          console.log('Botão Consultar clicado'); // Log para depuração
+          const termo = document.getElementById('busca').value.trim().toLowerCase();
+          if(!termo) return carregarTodos();
 
-      if(arr.length === 0)
-        tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental cadastrado</td></tr>';
-      else
-        arr.forEach(i => tabela.appendChild(montarLinha(i)));
-    }
+          const filtrados = currentList.filter(it =>
+            (it.sv && it.sv.toLowerCase().includes(termo)) ||
+            (it.nome && it.nome.toLowerCase().includes(termo)) ||
+            (it.nfe && it.nfe.toLowerCase().includes(termo))
+          );
 
-    btnBuscar.onclick = () => {
-      const termo = document.getElementById('busca').value.trim().toLowerCase();
-      if(!termo) return carregarTodos();
+          limparTabela();
 
-      const filtrados = currentList.filter(it =>
-        (it.sv && it.sv.toLowerCase().includes(termo)) ||
-        (it.nome && it.nome.toLowerCase().includes(termo)) ||
-        (it.nfe && it.nfe.toLowerCase().includes(termo))
-      );
+          if(filtrados.length === 0)
+            tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental encontrado</td></tr>';
+          else
+            filtrados.forEach(i => tabela.appendChild(montarLinha(i)));
+        };
 
-      limparTabela();
+        function gerarQR(item){
+          const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
+          const temp = document.createElement('div');
+          new QRCode(temp, { text: url, width:280, height:280 });
 
-      if(filtrados.length === 0)
-        tabela.innerHTML = '<tr><td colspan="9">Nenhum ferramental encontrado</td></tr>';
-      else
-        filtrados.forEach(i => tabela.appendChild(montarLinha(i)));
-    };
+          const img = temp.querySelector('img');
 
-    function gerarQR(item){
-      const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
-      const temp = document.createElement('div');
-      new QRCode(temp, { text: url, width:280, height:280 });
+          Swal.fire({
+            title: `QR — ${item.nome}`,
+            html: `<div style="display:flex; justify-content:center;">
+                    <img src="${img.src}" style="width:220px"/>
+                   </div>`,
+            showConfirmButton:true
+          });
+        }
 
-      const img = temp.querySelector('img');
+        function exportarQR(item){
+            const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
+            const qrDiv = document.createElement('div');
+            new QRCode(qrDiv, { text: url, width:600, height:600 });
 
-      Swal.fire({
-        title: `QR — ${item.nome}`,
-        html: `<div style="display:flex; justify-content:center;">
-                <img src="${img.src}" style="width:220px"/>
-               </div>`,
-        showConfirmButton:true
-      });
-    }
+            setTimeout(() => {
+                const img = qrDiv.querySelector('img').src;
+                const a = document.createElement('a');
+                a.href = img;
+                a.download = `QR_${item.sv || item.nome}.png`;
+                a.click();
+            }, 500);
+        }
 
-    function exportarQR(item){
-        const url = `${window.location.origin}/SGF/detalhes.html?id=${item.id}`;
-        const qrDiv = document.createElement('div');
-        new QRCode(qrDiv, { text: url, width:600, height:600 });
+        btnExportCSV.onclick = () => {
+          console.log('Botão Exportar CSV clicado'); // Log para depuração
+          if(!currentList.length)
+            return Swal.fire({ icon:'info', title:'Nada para exportar' });
 
-        setTimeout(() => {
-            const img = qrDiv.querySelector('img').src;
-            const a = document.createElement('a');
-            a.href = img;
-            a.download = `QR_${item.sv || item.nome}.png`;
-            a.click();
-        }, 500);
-    }
+          try {
+            exportToCSV(currentList, 'ferramentais.csv');
+          } catch (error) {
+            console.error('Erro ao exportar CSV:', error);
+            Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao exportar CSV.' });
+          }
+        };
 
-    btnExportCSV.onclick = () => {
-      if(!currentList.length)
-        return Swal.fire({ icon:'info', title:'Nada para exportar' });
+        btnExportPDF.onclick = () => {
+          console.log('Botão Exportar PDF clicado'); // Log para depuração
+          window.print();
+        };
 
-      exportToCSV(currentList, 'ferramentais.csv');
-    };
+        btnVoltar.onclick = () => {
+          console.log('Botão Voltar clicado'); // Log para depuração
+          location.href = 'menu.html';
+        };
 
-    btnExportPDF.onclick = () => {
-      window.print();
-    };
-
-    carregarTodos();
+        carregarTodos();
+    });
 </script>
 
 </body>
